@@ -5,17 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Bambino Eco — Pilotage des crèches</title>
 <style>
-  :root{
-    --cream:#FBF7EF;--paper:#fff;--sage:#6E9079;--sage-d:#4E6B59;--sage-l:#DDEADE;--sage-xl:#EEF4EE;
+  :root{--cream:#FBF7EF;--paper:#fff;--sage:#6E9079;--sage-d:#4E6B59;--sage-l:#DDEADE;--sage-xl:#EEF4EE;
     --terra:#D98B6F;--terra-l:#F6E4DC;--lav:#B8B2DB;--lav-l:#E7E4F3;--amber:#E0A458;--amber-l:#FBEFD9;
-    --red:#D4756A;--red-l:#F8E1DD;--ink:#3A3A34;--soft:#6C6C62;--line:#E9E3D6;
-  }
+    --red:#D4756A;--red-l:#F8E1DD;--ink:#3A3A34;--soft:#6C6C62;--line:#E9E3D6;}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Trebuchet MS','Segoe UI',system-ui,sans-serif;color:var(--ink);
-    background:radial-gradient(1000px 500px at 92% -10%,#F4EFE2,transparent 60%),radial-gradient(800px 400px at -8% 110%,#EDF2EC,transparent 55%),var(--cream);
-    background-attachment:fixed;min-height:100vh}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 16px 60px}
-  h1{font-size:27px;line-height:1.1}.sub{color:var(--soft);font-weight:bold;font-size:14px;margin-top:2px}
+    background:radial-gradient(1000px 500px at 92% -10%,#F4EFE2,transparent 60%),radial-gradient(800px 400px at -8% 110%,#EDF2EC,transparent 55%),var(--cream);background-attachment:fixed;min-height:100vh}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 16px 70px}
+  h1{font-size:26px;line-height:1.1}.sub{color:var(--soft);font-weight:bold;font-size:14px;margin-top:2px}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 30px -24px rgba(60,60,52,.4);padding:18px}
   .row{display:flex;gap:12px;flex-wrap:wrap}
   .btn{font:inherit;font-weight:bold;border:none;cursor:pointer;border-radius:11px;padding:9px 15px;font-size:14px;transition:.12s}
@@ -23,36 +20,40 @@
   .pri{background:var(--sage);color:#fff}.pri:hover{background:var(--sage-d)}
   .soft{background:#fff;border:1px solid var(--line);color:var(--ink)}.soft:hover{border-color:var(--sage)}
   .ghost{background:var(--sage-xl);color:var(--sage-d)}.ghost:hover{background:var(--sage-l)}
-  select,input{font:inherit;font-weight:bold;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;color:var(--ink);width:100%}
-  select:focus,input:focus{outline:none;border-color:var(--sage)}
+  .danger{background:var(--red-l);color:#9e463c}
+  select,input,textarea{font:inherit;font-weight:bold;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;color:var(--ink);width:100%}
+  select:focus,input:focus,textarea:focus{outline:none;border-color:var(--sage)}
   label{font-size:11px;font-weight:bold;color:var(--soft);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
   .pill{border-radius:999px;font-weight:bold;font-size:12px;padding:3px 10px;display:inline-block}
-  header{position:sticky;top:0;z-index:30;background:rgba(251,247,239,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .brand{display:flex;align-items:center;gap:10px}
-  .logo{width:40px;height:40px;border-radius:13px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
+  header{position:sticky;top:0;z-index:30;background:rgba(251,247,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:13px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
   .tab{padding:8px 13px;border-radius:11px;cursor:pointer;font-weight:bold;font-size:14px;color:var(--soft);white-space:nowrap}
-  .tab:hover{background:var(--sage-xl);color:var(--sage-d)}
-  .tab.on{background:var(--sage);color:#fff}
-  .kpi{flex:1;min-width:140px}
-  .kpiv{font-size:32px;font-weight:bold;line-height:1.1;margin-top:3px}
-  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
-  @media(max-width:760px){.grid5{grid-template-columns:repeat(2,1fr)}}
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
-  th{text-align:left;color:var(--soft);font-size:12px;padding:8px 6px}
-  td{padding:9px 6px;border-top:1px solid #f3eee2}
-  .tl{overflow-x:auto}.tlin{min-width:720px}
+  .tab:hover{background:var(--sage-xl);color:var(--sage-d)}.tab.on{background:var(--sage);color:#fff}
+  .kpi{flex:1;min-width:140px}.kpiv{font-size:30px;font-weight:bold;line-height:1.1;margin-top:3px}
+  .mini{font-size:12px;color:var(--soft);font-weight:bold}
+  .gt{width:100%;border-collapse:separate;border-spacing:0;min-width:760px}
+  .gt th{font-size:12.5px;color:var(--sage-d);padding:8px;text-align:left;border-bottom:2px solid var(--sage-l);vertical-align:bottom}
+  .gt td{vertical-align:top;border-bottom:1px solid #f3eee2;padding:8px;min-width:128px}
+  .gt td.name{min-width:150px;background:var(--sage-xl);border-radius:10px 0 0 10px}
+  .chip{display:flex;align-items:center;justify-content:space-between;gap:6px;border-radius:9px;padding:5px 8px;font-weight:bold;font-size:12.5px;margin:2px 0}
+  .chip .x{cursor:pointer;opacity:.6;font-size:11px}.chip .x:hover{opacity:1}
+  .add{display:inline-block;cursor:pointer;border:1px dashed var(--sage);color:var(--sage-d);border-radius:8px;padding:3px 8px;font-size:12px;font-weight:bold;margin-top:3px;background:#fff}
+  .add:hover{background:var(--sage-xl)}
+  .totrow td{background:#faf7ef;font-weight:bold;font-size:12.5px}
   .modalbg{position:fixed;inset:0;background:rgba(58,58,52,.42);display:flex;align-items:center;justify-content:center;z-index:60;padding:14px}
   .fade{animation:f .3s ease}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .mini{font-size:12px;color:var(--soft);font-weight:bold}
+  .scroll{overflow-x:auto}
+  .iconbtn{cursor:pointer;border:none;background:none;font-size:14px;padding:3px 6px;border-radius:7px}
+  .iconbtn:hover{background:var(--sage-xl)}
+  pre{white-space:pre-wrap;font-family:inherit;font-weight:bold;font-size:12.5px;background:var(--sage-xl);border-radius:10px;padding:10px;color:var(--ink)}
+  @media print{header,#tabs,.noprint{display:none!important}.wrap{padding:0}.card{box-shadow:none;border:none}}
 </style>
 </head>
 <body>
-<header>
+<header class="noprint">
   <div class="wrap" style="padding-top:12px;padding-bottom:12px">
     <div class="row" style="align-items:center">
-      <div class="brand"><div class="logo">🐦</div><div>
-        <div style="font-weight:bold;font-size:19px">Bambino<span style="color:var(--terra)">eco</span></div>
-        <div class="mini" style="letter-spacing:.08em">PILOTAGE RÉSEAU</div></div></div>
+      <div class="brand"><div class="logo">🐦</div><div><div style="font-weight:bold;font-size:19px">Bambino<span style="color:var(--terra)">eco</span></div><div class="mini" style="letter-spacing:.08em">PILOTAGE RÉSEAU</div></div></div>
       <div style="margin-left:auto" class="row" id="ctrls"></div>
     </div>
     <div class="row" id="tabs" style="margin-top:10px;gap:5px;overflow-x:auto"></div>
@@ -62,44 +63,40 @@
 <div id="modal"></div>
 
 <script>
-/* ===== DONNÉES ===== */
 const DAYS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
 const ROLES=["Gérante","Auxiliaire de puériculture (AP)","AEP","AP-AEP","Infirmière","EJE","Infirmière / EJE"];
-const RUSH=["10:30","16:00"], CS="06:00", CE="20:00";
+const RUSH=["10:30","16:00"],CS="06:00",CE="20:00";
 const GLAB={"bébé":"Bébé","moyen":"Moyen","grand":"Grand"};
 const GCOL={"bébé":"#E0A458","moyen":"#6E9079","grand":"#B8B2DB"};
+const realNow=()=>{const d=new Date();return d.getHours()*60+d.getMinutes();};
 
-let state={
-  view:"dash", cid:"rbx", week:0, day:0, now:13*60+10, modal:null,
-  creches:[
-    {id:"rbx",name:"Roubaix",cap:12,open:"08:00",close:"18:30",color:"#6E9079"},
-    {id:"mcq",name:"Marcq-En-Baroeul",cap:12,open:"08:00",close:"18:00",color:"#C58A6A"},
-  ],
+let state={view:"dash",cid:"rbx",week:0,day:0,now:realNow(),modal:null,ratio:"6",pmode:"graph",annTab:"emps",annFilt:"Tous",
+  creches:[{id:"rbx",name:"Roubaix",cap:12,open:"08:00",close:"18:30",color:"#6E9079"},{id:"mcq",name:"Marcq-En-Baroeul",cap:12,open:"08:00",close:"18:00",color:"#C58A6A"}],
   emps:[
-    {id:"e0",f:"Audrey",l:"JEROME",role:"Gérante",h:35,aff:[["rbx","dédié"],["mcq","dédié"]]},
-    {id:"e1",f:"Clémentine",l:"HAESSLE",role:"Auxiliaire de puériculture (AP)",h:35,aff:[["rbx","dédié"]]},
-    {id:"e2",f:"Kadjidja",l:"BENSALEM",role:"AP-AEP",h:35,aff:[["rbx","dédié"]]},
-    {id:"e3",f:"Méliana",l:"PONTHIEU",role:"AEP",h:35,aff:[["rbx","dédié"]]},
-    {id:"e4",f:"Inès",l:"HIRTI",role:"AEP",h:35,aff:[["rbx","dédié"]]},
-    {id:"e5",f:"Amandine",l:"PREVOTS",role:"Infirmière / EJE",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
-    {id:"e6",f:"Mélissa",l:"COIMBRA",role:"AEP",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
-    {id:"e7",f:"Olivia",l:"DUBAR",role:"AEP",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
-    {id:"e8",f:"Pauline",l:"FORMONT",role:"Auxiliaire de puériculture (AP)",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
+   {id:"e0",f:"Audrey",l:"JEROME",role:"Gérante",h:35,aff:[["rbx","dédié"],["mcq","dédié"]]},
+   {id:"e1",f:"Clémentine",l:"HAESSLE",role:"Auxiliaire de puériculture (AP)",h:35,aff:[["rbx","dédié"]]},
+   {id:"e2",f:"Kadjidja",l:"BENSALEM",role:"AP-AEP",h:35,aff:[["rbx","dédié"]]},
+   {id:"e3",f:"Méliana",l:"PONTHIEU",role:"AEP",h:35,aff:[["rbx","dédié"]]},
+   {id:"e4",f:"Inès",l:"HIRTI",role:"AEP",h:35,aff:[["rbx","dédié"]]},
+   {id:"e5",f:"Amandine",l:"PREVOTS",role:"Infirmière / EJE",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
+   {id:"e6",f:"Mélissa",l:"COIMBRA",role:"AEP",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
+   {id:"e7",f:"Olivia",l:"DUBAR",role:"AEP",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
+   {id:"e8",f:"Pauline",l:"FORMONT",role:"Auxiliaire de puériculture (AP)",h:35,aff:[["mcq","dédié"],["rbx","remplaçant ponctuel"]]},
   ],
-  shifts:[], kids:[], pts:{}, abs:[]
+  shifts:[],kids:[],pts:{},abs:[],
+  moments:[{id:"m1",t:"10:30",n:"Dernière prise de poste · cuisine"},{id:"m2",t:"11:00",n:"Repas bébés"},{id:"m3",t:"11:30",n:"Repas moyens-grands"},{id:"m4",t:"12:15",n:"Répartition : sol / change / cuisine"},{id:"m5",t:"13:00",n:"1ʳᵉ sieste bébés · 1ʳᵉ pause"},{id:"m6",t:"13:15",n:"Sieste moyens-grands · 1 pro/dortoir"},{id:"m7",t:"13:45",n:"Pause +45 min · premiers réveils"},{id:"m8",t:"15:30",n:"Goûter"},{id:"m9",t:"16:30",n:"Nettoyage · premiers départs"}],
+  requests:[{id:"r1",name:"Hugo Lancry",cid:"rbx",date:"2026-06-15",s:"08:00",en:"13:00",motif:"Journée supplémentaire",status:"en attente"}]
 };
-const SP={rbx:{e4:["07:45","15:00"],e3:["08:30","17:00"],e2:["09:30","18:00"],e1:["10:30","18:45"]},
-         mcq:{e6:["08:00","16:00"],e5:["08:30","16:30"],e7:["09:00","17:00"],e8:["10:00","18:00"]}};
+const SP={rbx:{e4:["07:45","15:00"],e3:["08:30","17:00"],e2:["09:30","18:00"],e1:["10:30","18:45"]},mcq:{e6:["08:00","16:00"],e5:["08:30","16:30"],e7:["09:00","17:00"],e8:["10:00","18:00"]}};
 (function(){let n=0;for(const c in SP)for(const e in SP[c])for(let d=0;d<5;d++)state.shifts.push({id:"s"+(n++),c,e,day:d,s:SP[c][e][0],en:SP[c][e][1]});})();
 const RK=[["Alba","Lebrun","grand",["","08:00-18:30","","08:00-18:30",""]],["Ana","Duprez","moyen",["08:15-17:00","08:15-17:00","","08:15-17:00","08:15-16:30"]],["Assia","Hasseine","bébé",["","","09:00-16:00","","09:00-16:00"]],["Aurèle","Saint-Clair","moyen",["","","08:00-16:00","09:00-17:00","09:00-17:00"]],["Benyamin","Bachir","grand",["08:30-17:15","08:30-17:15","08:30-17:15","",""]],["Hortense","Tordeux","moyen",["09:00-17:30","09:00-17:30","","09:00-17:30","09:00-17:30"]],["Hugo","Lancry","grand",["","08:00-18:00","08:00-18:00","08:00-18:00","08:00-18:00"]],["Insâf","Talbi","moyen",["","08:00-17:00","","08:00-17:00","08:00-17:00"]],["Issa","Kabil","bébé",["09:30-17:00","","09:30-17:00","","09:30-17:00"]],["Jasmine","Haddad","moyen",["","","09:30-17:30","09:30-17:30",""]],["Kamila","Boumediene","bébé",["09:30-17:00","09:30-17:00","","09:30-17:00",""]],["Léo","Touzalin","grand",["09:00-17:30","09:00-17:30","","09:00-17:30","09:00-17:30"]],["Lilo","Vollander","moyen",["08:00-18:30","","08:00-18:30","","08:00-18:30"]],["Naazim","Boukhari","bébé",["08:30-16:00","08:30-16:00","08:30-16:00","08:30-16:00",""]],["Nouri","Rabei","grand",["09:00-17:00","09:00-17:00","09:00-17:00","09:00-17:00",""]],["Pablo","Duthoit","moyen",["09:00-17:00","09:00-17:00","09:00-17:00","09:00-17:00","09:00-17:00"]],["Qayyim","Rabei","grand",["09:00-17:00","09:00-17:00","09:00-17:00","09:00-17:00","09:00-17:00"]],["Tasnim","Tabet","moyen",["10:00-17:00","10:00-17:00","","10:00-17:00","10:00-17:00"]],["Zayn","Boubaker","bébé",["09:30-17:00","09:30-17:00","","09:30-17:00","09:30-17:00"]]];
 const MK=[["Marius","Vasseur","moyen",["08:30-16:30","08:30-16:30","08:30-16:30","08:30-16:30","08:30-16:30"]],["Noor","Cherif","bébé",["09:00-17:00","09:00-17:00","","09:00-17:00",""]],["Eliott","Lemaire","grand",["08:00-17:30","08:00-17:30","08:00-17:30","08:00-17:30","08:00-17:30"]],["Sienna","Faure","bébé",["","09:30-16:00","","09:30-16:00",""]],["Gabin","Roussel","grand",["","","08:00-18:00","","08:00-18:00"]],["Lina","Mercier","moyen",["09:00-12:00;14:00-17:00","","09:00-17:00","","09:00-17:00"]]];
-(function(){let n=0;RK.forEach(k=>state.kids.push({id:"k"+(n++),f:k[0],l:k[1],c:"rbx",g:k[2],plan:k[3]}));MK.forEach(k=>state.kids.push({id:"k"+(n++),f:k[0],l:k[1],c:"mcq",g:k[2],plan:k[3]}));})();
+(function(){let n=0;RK.forEach(k=>state.kids.push({id:"k"+(n++),f:k[0],l:k[1],c:"rbx",g:k[2],plan:k[3].slice(),spec:"",note:""}));MK.forEach(k=>state.kids.push({id:"k"+(n++),f:k[0],l:k[1],c:"mcq",g:k[2],plan:k[3].slice(),spec:"",note:""}));const li=state.kids.find(k=>k.f==="Lina");if(li){li.spec="coupure";li.note="Repas pris à la maison le midi.";}})();
 
-/* persistance douce */
-try{const saved=localStorage.getItem("bambino");if(saved){const o=JSON.parse(saved);Object.assign(state,o);state.modal=null;}}catch(e){}
-function persist(){try{const{view,modal,now,...keep}=state;localStorage.setItem("bambino",JSON.stringify(keep));}catch(e){}}
+try{const s=localStorage.getItem("bambino2");if(s){Object.assign(state,JSON.parse(s));state.modal=null;state.now=realNow();}}catch(e){}
+function persist(){try{const{view,modal,now,day,...k}=state;localStorage.setItem("bambino2",JSON.stringify(k));}catch(e){}}
 
-/* ===== UTILS ===== */
+/* utils */
 const toMin=t=>{if(!t)return null;const[h,m]=t.split(":").map(Number);return h*60+m;};
 const toHM=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 const durh=(a,b)=>(toMin(b)-toMin(a))/60;
@@ -110,165 +107,264 @@ function dlabel(o,i){const d=monday(o);d.setDate(d.getDate()+i);return String(d.
 const creche=()=>state.creches.find(c=>c.id===state.cid);
 const team=c=>state.emps.filter(e=>e.aff.some(a=>a[0]===c));
 const kidsIn=c=>state.kids.filter(k=>k.c===c);
-function dayShifts(c,d){return state.shifts.filter(s=>s.c===c&&s.day===d).filter(s=>!state.abs.some(a=>a.kind==="emp"&&a.ref===s.e&&d>=a.d0&&d<=a.d1));}
+function dayShifts(c,d){return state.shifts.filter(s=>s.c===c&&s.day===d).filter(s=>!state.abs.some(a=>a.kind==="emp"&&a.ref===s.e&&d>=a.d0&&d<=a.d1)).sort((a,b)=>toMin(a.s)-toMin(b.s));}
 function kidSlot(k,d){if(state.abs.some(a=>a.kind==="child"&&a.ref===k.id&&d>=a.d0&&d<=a.d1))return"";return k.plan[d]||"";}
 function segs(str){return str?str.split(";").filter(Boolean).map(x=>{const p=x.split("-");return{s:p[0],en:p[1]};}):[];}
 function kidSegs(k,d){return segs(kidSlot(k,d));}
-function reqPros(n){return n===0?0:Math.max(2,Math.ceil(n/6));}
-
+function reqPros(nm,march){const tot=nm+march;if(tot===0)return 0;let r=state.ratio==="58"?Math.ceil(nm/5)+Math.ceil(march/8):Math.ceil(tot/6);if(tot>3)r=Math.max(r,2);return Math.max(1,r);}
 function counts(c,d,mode){const a=toMin(CS),b=toMin(CE),out=[];const ks=kidsIn(c),sh=dayShifts(c,d);
-  for(let m=a;m<b;m+=30){let kc=0;ks.forEach(k=>{if(mode==="reel"){const p=state.pts[k.id+"_"+d];if(p&&p.arr){const x=toMin(p.arr),y=p.dep?toMin(p.dep):state.now;if(x<=m&&m<y)kc++;}}else{if(kidSegs(k,d).some(sg=>toMin(sg.s)<=m&&m<toMin(sg.en)))kc++;}});
-  let pc=0;sh.forEach(s=>{if(toMin(s.s)<=m&&m<toMin(s.en))pc++;});out.push({m,k:kc,p:pc});}return out;}
-function dayStats(c,d){const cr=state.creches.find(x=>x.id===c);let ch=0;kidsIn(c).forEach(k=>{kidSegs(k,d).forEach(sg=>{ch+=(toMin(sg.en)-toMin(sg.s))/60;});});
-  const open=durh(cr.open,cr.close);const occ=open>0?Math.round(100*ch/(cr.cap*open)):0;
-  const cnt=counts(c,d,"prev");let peak={k:0,p:0};cnt.forEach(s=>{if(s.k>peak.k)peak=s;});
-  const pros=new Set(dayShifts(c,d).map(s=>s.e)).size;return{occ,ch:Math.round(ch),peak:peak.k,pros};}
+  for(let m=a;m<b;m+=30){let nm=0,march=0;ks.forEach(k=>{let pres=false;
+    if(mode==="reel"){const p=state.pts[k.id+"_"+d];if(p&&p.arr){const x=toMin(p.arr),y=p.dep?toMin(p.dep):state.now;if(x<=m&&m<y)pres=true;}}
+    else pres=kidSegs(k,d).some(sg=>toMin(sg.s)<=m&&m<toMin(sg.en));
+    if(pres){if(k.g==="bébé")nm++;else march++;}});
+    let pc=0;sh.forEach(s=>{if(toMin(s.s)<=m&&m<toMin(s.en))pc++;});out.push({m,k:nm+march,nm,march,p:pc,req:reqPros(nm,march)});}
+  return out;}
+function dayStats(c,d){const cr=state.creches.find(x=>x.id===c);let ch=0;kidsIn(c).forEach(k=>kidSegs(k,d).forEach(sg=>ch+=durh(sg.s,sg.en)));
+  const open=durh(cr.open,cr.close),occ=open>0?Math.round(100*ch/(cr.cap*open)):0;
+  const cnt=counts(c,d,"prev");let peak=0,under=0;cnt.forEach(s=>{if(s.k>peak)peak=s.k;if(s.k>0&&s.p<s.req)under++;});
+  return{occ,ch:Math.round(ch),peak,under,pros:new Set(dayShifts(c,d).map(s=>s.e)).size};}
 
-/* ===== ACTIONS ===== */
+/* actions */
 function setView(v){state.view=v;render();}
 function setCreche(v){state.cid=v;render();}
 function setWeek(d){state.week+=d;render();}
 function setDay(d){state.day=d;render();}
-function openModal(t,extra){state.modal=Object.assign({type:t},extra||{});render();}
+function setRatio(v){state.ratio=v;persist();render();}
+function setPmode(v){state.pmode=v;render();}
+function setAnn(t){state.annTab=t;state.annFilt="Tous";render();}
+function setAnnFilt(f){state.annFilt=f;render();}
+const crName=id=>{const c=state.creches.find(x=>x.id===id);return c?c.name:"?";};
+function isCoupure(k){return (k.spec&&/coup/i.test(k.spec))||k.plan.some(p=>segs(p).length>1);}
+function empWeekHours(e){return state.shifts.filter(s=>s.e===e.id).reduce((a,s)=>a+durh(s.s,s.en),0);}
+function pmodeBtns(){return `<div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">`+[["graph","📊 Graphique"],["grid","▦ Tableau"]].map(x=>`<button class="btn ${state.pmode===x[0]?"pri":""}" style="${state.pmode!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setPmode('${x[0]}')">${x[1]}</button>`).join("")+`</div>`;}
+function chips(arr,active,fn){return `<div class="row" style="gap:6px;margin-bottom:14px">`+arr.map(x=>`<button class="btn ${active===x?"pri":"soft"}" onclick="${fn}('${x}')">${x}</button>`).join("")+`</div>`;}
+function gantt(rows){const a=toMin(CS),b=toMin(CE),span=b-a,pct=m=>((m-a)/span)*100;const rzA=pct(toMin(RUSH[0])),rzB=pct(toMin(RUSH[1]));
+  let ruler="";for(let x=a;x<=b;x+=120)ruler+=`<div style="position:absolute;left:${pct(x)}%;transform:translateX(-50%);font-size:11px;font-weight:bold;color:var(--soft)">${toHM(x).slice(0,2)}h</div>`;
+  let body=rows.map(r=>{
+    const bars=r.slots.map(s=>{const x=toMin(s.s),y=toMin(s.en);return `<div title="${s.s}–${s.en}" style="position:absolute;left:${pct(x)}%;width:${pct(y)-pct(x)}%;top:5px;height:26px;background:${r.color};color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:bold;overflow:hidden;box-shadow:0 4px 10px -7px rgba(0,0,0,.5)"><span>${s.s}–${s.en}</span>${s.del?`<span style="cursor:pointer;opacity:.85" onclick="${s.del}">✕</span>`:""}</div>`;}).join("");
+    return `<div style="display:flex;align-items:center;border-bottom:1px solid #f3eee2;min-height:40px"><div style="width:150px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding-right:8px">${r.head}</div><div style="position:relative;flex:1;height:38px"><div style="position:absolute;left:${rzA}%;width:${rzB-rzA}%;top:0;bottom:0;background:var(--terra);opacity:.07"></div>${bars}</div><div style="width:92px;flex-shrink:0;text-align:right">${r.add?`<button class="add noprint" onclick="${r.add}">+ créneau</button>`:""}</div></div>`;
+  }).join("");
+  return `<div class="scroll"><div style="min-width:760px"><div style="display:flex"><div style="width:150px;flex-shrink:0"></div><div style="position:relative;flex:1;height:20px;border-bottom:1px solid var(--line)"><div style="position:absolute;left:${rzA}%;width:${rzB-rzA}%;top:-2px;bottom:0;background:var(--terra-l);opacity:.5;border-radius:6px"></div>${ruler}<div style="position:absolute;left:${(rzA+rzB)/2}%;transform:translateX(-50%);top:1px;font-size:10px;font-weight:bold;color:var(--terra)">RUSH</div></div><div style="width:92px;flex-shrink:0"></div></div>${body}</div></div>`;}
+function openModal(t,x){state.modal=Object.assign({type:t},x||{});render();setTimeout(()=>{const el=document.querySelector('#modal input,#modal select');if(el)el.focus();},50);}
 function closeModal(){state.modal=null;render();}
-function point(id,st){const k=id+"_"+state.day;const cur=state.pts[k]||{status:"attendu",arr:null,dep:null};
-  if(st==="present")cur.status="présent",cur.arr=toHM(state.now);
-  else if(st==="parti"){if(cur.status!=="présent")return;cur.status="parti",cur.dep=toHM(state.now);}
-  else cur.status="absent";state.pts[k]=cur;persist();render();}
+function delShift(id){state.shifts=state.shifts.filter(s=>s.id!==id);persist();render();}
+function delMoment(id){state.moments=state.moments.filter(m=>m.id!==id);persist();render();}
+function delKid(id){if(confirm("Supprimer cet enfant et son planning ?")){state.kids=state.kids.filter(k=>k.id!==id);persist();render();}}
+function delEmp(id){if(confirm("Supprimer ce salarié et ses créneaux ?")){state.emps=state.emps.filter(e=>e.id!==id);state.shifts=state.shifts.filter(s=>s.e!==id);persist();render();}}
+function delCreche(id){if(state.creches.length<2){alert("Au moins une crèche est nécessaire.");return;}if(confirm("Supprimer cette crèche ? Ses créneaux et enfants seront retirés.")){state.creches=state.creches.filter(c=>c.id!==id);state.shifts=state.shifts.filter(s=>s.c!==id);state.kids=state.kids.filter(k=>k.c!==id);state.emps.forEach(e=>e.aff=e.aff.filter(a=>a[0]!==id));if(state.cid===id)state.cid=state.creches[0].id;persist();render();}}
+function point(id,st){const k=id+"_"+state.day;const cur=state.pts[k]||{status:"attendu",arr:null,dep:null};if(st==="present")cur.status="présent",cur.arr=toHM(state.now);else if(st==="parti"){if(cur.status!=="présent")return;cur.status="parti",cur.dep=toHM(state.now);}else cur.status="absent";state.pts[k]=cur;persist();render();}
 function delAbs(id){state.abs=state.abs.filter(a=>a.id!==id);persist();render();}
+function delSeg(kid,d,idx){const k=state.kids.find(x=>x.id===kid);const arr=segs(k.plan[d]);arr.splice(idx,1);k.plan[d]=arr.map(x=>x.s+"-"+x.en).join(";");persist();render();}
+function reqAction(id,ok){const r=state.requests.find(x=>x.id===id);if(!r)return;if(ok){const k=state.kids.find(x=>x.f+" "+x.l===r.name&&x.c===r.cid);if(k){const wd=new Date(r.date).getDay()-1;if(wd>=0&&wd<5){const arr=segs(k.plan[wd]);arr.push({s:r.s,en:r.en});k.plan[wd]=arr.map(x=>x.s+"-"+x.en).join(";");}}r.status="acceptée";}else r.status="refusée";persist();render();}
 function val(id){const el=document.getElementById(id);return el?el.value.trim():"";}
 function chk(id){const el=document.getElementById(id);return el?el.checked:false;}
-function saveModal(){const m=state.modal;
-  if(m.type==="creche"){if(!val("m_name"))return;state.creches.push({id:"c"+Date.now(),name:val("m_name"),cap:+val("m_cap")||12,open:val("m_open")||"08:00",close:val("m_close")||"18:30",color:val("m_color")||"#6E9079"});}
-  if(m.type==="emp"){if(!val("m_f")||!val("m_l"))return;state.emps.push({id:"e"+Date.now(),f:val("m_f"),l:val("m_l"),role:val("m_role"),h:+val("m_h")||35,aff:[[val("m_c"),val("m_t")]]});}
-  if(m.type==="child"){if(!val("m_f")||!val("m_l"))return;const s1=(val("m_s")&&val("m_e"))?val("m_s")+"-"+val("m_e"):"09:00-17:00";const s2=(val("m_s2")&&val("m_e2"))?";"+val("m_s2")+"-"+val("m_e2"):"";const slot=s1+s2;state.kids.push({id:"k"+Date.now(),f:val("m_f"),l:val("m_l"),c:state.cid,g:val("m_g"),plan:DAYS.map((_,i)=>chk("m_d"+i)?slot:"")});}
-  if(m.type==="shift"){if(!val("m_emp")||!val("m_s")||!val("m_e"))return;state.shifts.push({id:"s"+Date.now(),c:m.c,e:val("m_emp"),day:m.d,s:val("m_s"),en:val("m_e")});}
-  if(m.type==="abs"){if(!val("m_ref"))return;const[kind,ref]=val("m_ref").split(":");state.abs.push({id:"a"+Date.now(),kind,ref,type:val("m_type"),d0:+val("m_d0"),d1:+val("m_d1")});}
-  if(m.type==="parent"){alert("✓ Demande envoyée — elle apparaîtrait dans la file de validation de la gérante.");state.modal=null;render();return;}
-  persist();state.modal=null;render();}
+function copyTxt(t){navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast("Copié ✓"),()=>fb());function fb(){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copié ✓");}catch(e){}ta.remove();}if(!navigator.clipboard)fb();}
+function toast(m){const d=document.createElement("div");d.textContent=m;d.style.cssText="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--sage-d);color:#fff;padding:10px 18px;border-radius:12px;font-weight:bold;z-index:99";document.body.appendChild(d);setTimeout(()=>d.remove(),1400);}
+function empWeekText(e){let lines=[`Planning — ${e.f} ${e.l} (${creche().name})`,`Semaine du ${dlabel(state.week,0)} au ${dlabel(state.week,4)}`,""];let tot=0;DAYS.forEach((dn,i)=>{const ss=dayShifts(state.cid,i).filter(s=>s.e===e.id);ss.forEach(s=>tot+=durh(s.s,s.en));lines.push(`${dn} ${dlabel(state.week,i)} : ${ss.length?ss.map(s=>s.s+"–"+s.en).join("   +   "):"repos"}`);});lines.push("",`Total : ${tot.toFixed(1)} h`);return lines.join("\n");}
 
-/* ===== RENDER TÊTE ===== */
+function saveModal(){const m=state.modal;
+  if(m.type==="creche"){if(m.edit){const c=state.creches.find(x=>x.id===m.edit);c.name=val("m_name")||c.name;c.cap=+val("m_cap")||c.cap;c.open=val("m_open")||c.open;c.close=val("m_close")||c.close;c.color=val("m_color")||c.color;}else{if(!val("m_name"))return;state.creches.push({id:"c"+Date.now(),name:val("m_name"),cap:+val("m_cap")||12,open:val("m_open")||"08:00",close:val("m_close")||"18:30",color:val("m_color")||"#6E9079"});}}
+  if(m.type==="emp"){if(m.edit){const e=state.emps.find(x=>x.id===m.edit);e.f=val("m_f")||e.f;e.l=val("m_l")||e.l;e.role=val("m_role");e.h=+val("m_h")||e.h;const c=val("m_c"),t=val("m_t");const ex=e.aff.find(a=>a[0]===c);if(ex)ex[1]=t;else e.aff.push([c,t]);}else{if(!val("m_f")||!val("m_l"))return;state.emps.push({id:"e"+Date.now(),f:val("m_f"),l:val("m_l"),role:val("m_role"),h:+val("m_h")||35,aff:[[val("m_c"),val("m_t")]]});}}
+  if(m.type==="child"){if(m.edit){const k=state.kids.find(x=>x.id===m.edit);k.f=val("m_f")||k.f;k.l=val("m_l")||k.l;k.g=val("m_g");k.spec=val("m_spec");k.note=val("m_note");}else{if(!val("m_f")||!val("m_l"))return;const s1=(val("m_s")&&val("m_e"))?val("m_s")+"-"+val("m_e"):"09:00-17:00";const s2=(val("m_s2")&&val("m_e2"))?";"+val("m_s2")+"-"+val("m_e2"):"";const slot=s1+s2;state.kids.push({id:"k"+Date.now(),f:val("m_f"),l:val("m_l"),c:state.cid,g:val("m_g"),spec:val("m_spec"),note:val("m_note"),plan:DAYS.map((_,i)=>chk("m_d"+i)?slot:"")});}}
+  if(m.type==="shift"){if(!val("m_emp")||!val("m_s")||!val("m_e"))return;state.shifts.push({id:"s"+Date.now(),c:m.c,e:val("m_emp"),day:+m.d,s:val("m_s"),en:val("m_e")});}
+  if(m.type==="kseg"){if(!val("m_s")||!val("m_e"))return;const k=state.kids.find(x=>x.id===m.k);const arr=segs(k.plan[m.d]);arr.push({s:val("m_s"),en:val("m_e")});k.plan[m.d]=arr.map(x=>x.s+"-"+x.en).join(";");}
+  if(m.type==="abs"){if(!val("m_ref"))return;const[kind,ref]=val("m_ref").split(":");state.abs.push({id:"a"+Date.now(),kind,ref,type:val("m_type"),d0:+val("m_d0"),d1:+val("m_d1")});}
+  if(m.type==="moment"){if(!val("m_t")||!val("m_n"))return;state.moments.push({id:"mo"+Date.now(),t:val("m_t"),n:val("m_n")});}
+  if(m.type==="addpro"){if(!val("m_emp"))return;const e=state.emps.find(x=>x.id===val("m_emp"));if(!e.aff.some(a=>a[0]===state.cid))e.aff.push([state.cid,"remplaçant ponctuel"]);}
+  if(m.type==="parent"){if(!val("m_name"))return;state.requests.push({id:"r"+Date.now(),name:val("m_name"),cid:state.cid,date:val("m_date")||monthISO(),s:val("m_s")||"09:00",en:val("m_e")||"17:00",motif:val("m_motif"),status:"en attente"});toast("Demande envoyée ✓");}
+  persist();state.modal=null;render();}
+function monthISO(){const d=monday(state.week);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+/* render */
 function render(){
   document.getElementById("ctrls").innerHTML=ctrls();
   document.getElementById("tabs").innerHTML=tabs();
   document.getElementById("app").innerHTML='<div class="fade">'+views[state.view]()+'</div>';
   document.getElementById("modal").innerHTML=state.modal?modal():"";
 }
-function ctrls(){
-  let h=`<select onchange="setCreche(this.value)" style="width:auto">`+state.creches.map(c=>`<option value="${c.id}" ${c.id===state.cid?"selected":""}>${E(c.name)}</option>`).join("")+`</select>`;
-  if(["team","kids","combo","point"].includes(state.view))
-    h+=`<button class="btn soft" onclick="setWeek(-1)">‹</button><span class="mini" style="align-self:center;min-width:120px;text-align:center">Sem. ${dlabel(state.week,0)}→${dlabel(state.week,4)}</span><button class="btn soft" onclick="setWeek(1)">›</button>`;
-  h+=`<span class="mini" style="align-self:center">⏱ ${toHM(state.now)}</span>`;return h;
-}
-function tabs(){const T=[["dash","Tableau de bord"],["team","Planning équipe"],["kids","Planning enfants"],["combo","Vue combinée"],["point","Pointage"],["abs","Absences"],["set","Réglages"]];
+function ctrls(){let h=`<select onchange="setCreche(this.value)" style="width:auto">`+state.creches.map(c=>`<option value="${c.id}" ${c.id===state.cid?"selected":""}>${E(c.name)}</option>`).join("")+`</select>`;
+  if(["team","kids","combo","point"].includes(state.view))h+=`<button class="btn soft" onclick="setWeek(-1)">‹</button><span class="mini" style="align-self:center;min-width:118px;text-align:center">Sem. ${dlabel(state.week,0)}→${dlabel(state.week,4)}</span><button class="btn soft" onclick="setWeek(1)">›</button>`;
+  const pend=state.requests.filter(r=>r.status==="en attente").length;
+  h+=`<span class="mini" style="align-self:center">⏱ ${toHM(state.now)}</span>`;return h;}
+function tabs(){const pend=state.requests.filter(r=>r.status==="en attente").length;
+  const T=[["dash","Tableau de bord"],["team","Planning équipe"],["kids","Planning enfants"],["combo","Vue combinée"],["point","Pointage"],["req","Demandes"+(pend?" ("+pend+")":"")],["ann","Annuaire"],["abs","Absences"],["set","Réglages"]];
   return T.map(([k,l])=>`<div class="tab ${state.view===k?"on":""}" onclick="setView('${k}')">${l}</div>`).join("");}
-function head(t,s,act){return `<div class="row" style="align-items:flex-end;justify-content:space-between;margin-bottom:16px"><div><h1>${t}</h1>${s?`<div class="sub">${s}</div>`:""}</div>${act||""}</div>`;}
+function head(t,s,act){return `<div class="row" style="align-items:flex-end;justify-content:space-between;margin-bottom:16px"><div><h1>${t}</h1>${s?`<div class="sub">${s}</div>`:""}</div><div class="row noprint">${act||""}</div></div>`;}
 function kpi(l,v,h,col){return `<div class="card kpi"><label>${l}</label><div class="kpiv" style="color:${col}">${v}</div>${h?`<div class="mini">${h}</div>`:""}</div>`;}
 function dayTabs(){return `<div class="row" style="margin-bottom:14px;gap:6px">`+DAYS.map((d,i)=>`<button class="btn ${state.day===i?"pri":"soft"}" onclick="setDay(${i})">${d} <span style="opacity:.7">${dlabel(state.week,i)}</span></button>`).join("")+`</div>`;}
 
-/* ===== VUES ===== */
 const views={};
+
 views.dash=function(){const c=state.cid,st=DAYS.map((_,d)=>dayStats(c,d));
-  const alerts=[];DAYS.forEach((dn,d)=>{counts(c,d,"prev").forEach(s=>{if(s.k>0&&s.p<reqPros(s.k))alerts.push(["red",`${dn} ${toHM(s.m)} : ${s.p} pro(s) pour ${s.k} enfants (min ${reqPros(s.k)})`]);});
-    dayShifts(c,d).forEach(s=>{if(toMin(s.s)>toMin("10:30")){const e=state.emps.find(x=>x.id===s.e);alerts.push(["amber",`${dn} : ${e.f} prend son poste à ${s.s} (>10h30)`]);}});
-    if(st[d].peak>creche().cap)alerts.push(["red",`${dn} : ${st[d].peak} enfants au pic > capacité (${creche().cap})`]);});
-  const dd=[...new Map(alerts.map(a=>[a[1],a])).values()].slice(0,6);
-  const presentNow=kidsIn(c).filter(k=>{const p=state.pts[k.id+"_0"];return p&&p.status==="présent";}).length;
-  let h=head("Tableau de bord",creche().name+" · vue de la semaine");
-  h+=`<div class="row" style="margin-bottom:16px">${kpi("Présents maintenant",presentNow,"d'après le pointage","var(--sage)")}${kpi("Effectif réseau",state.emps.length,"salariés","var(--lav)")}${kpi("Occupation moy.",Math.round(st.reduce((a,s)=>a+s.occ,0)/5)+"%","place-heures","var(--terra)")}${kpi("Capacité",creche().cap,creche().open+"–"+creche().close,"var(--amber)")}</div>`;
-  h+=`<div class="card" style="margin-bottom:16px"><b>Occupation & adéquation équipe — par jour</b><div class="grid5" style="margin-top:10px">`+
-    st.map((s,d)=>{const ok=s.pros>=reqPros(s.peak),tense=s.pros===reqPros(s.peak);const col=!ok?"var(--red)":tense?"var(--amber)":"var(--sage)";const bg=!ok?"var(--red-l)":tense?"var(--amber-l)":"var(--sage-xl)";
-      return `<div onclick="setDay(${d});setView('combo')" style="cursor:pointer;border-radius:14px;padding:12px;background:${bg}"><div style="font-weight:bold;font-size:13px">${DAYS[d]}</div><div class="mini">${dlabel(state.week,d)}</div><div style="font-size:28px;font-weight:bold;color:${col};margin:4px 0">${s.occ}%</div><div style="height:6px;background:#fff;border-radius:6px;overflow:hidden"><div style="width:${Math.min(100,s.occ)}%;height:100%;background:${col}"></div></div><div class="mini" style="margin-top:6px">👶 ${s.peak} pic · 🧑‍🍼 ${s.pros}</div></div>`;}).join("")+`</div></div>`;
-  h+=`<div class="card"><b>Alertes</b>`;
-  if(!dd.length)h+=`<div style="padding:12px 0;color:var(--sage-d);font-weight:bold">✓ Aucune alerte cette semaine.</div>`;
+  const al=[];DAYS.forEach((dn,d)=>{counts(c,d,"prev").forEach(s=>{if(s.k>0&&s.p<s.req)al.push(["red",`${dn} ${toHM(s.m)} : ${s.p} pro(s) pour ${s.k} enfants — min légal ${s.req}`]);});
+    dayShifts(c,d).forEach(s=>{if(toMin(s.s)>toMin("10:30")){const e=state.emps.find(x=>x.id===s.e);al.push(["amber",`${dn} : ${e.f} prend son poste à ${s.s} (>10h30)`]);}});
+    if(st[d].peak>creche().cap)al.push(["red",`${dn} : ${st[d].peak} enfants au pic > capacité (${creche().cap})`]);});
+  const dd=[...new Map(al.map(a=>[a[1],a])).values()].slice(0,6);
+  const pn=kidsIn(c).filter(k=>{const p=state.pts[k.id+"_"+state.day];return p&&p.status==="présent";}).length;
+  let h=head("Tableau de bord",creche().name+" · semaine du "+dlabel(state.week,0));
+  h+=`<div class="row" style="margin-bottom:16px">${kpi("Présents maintenant",pn,"pointage · "+toHM(state.now),"var(--sage)")}${kpi("Effectif réseau",state.emps.length,"salariés","var(--lav)")}${kpi("Occupation moy.",Math.round(st.reduce((a,s)=>a+s.occ,0)/5)+"%","place-heures","var(--terra)")}${kpi("Capacité",creche().cap,creche().open+"–"+creche().close,"var(--amber)")}</div>`;
+  h+=`<div class="card" style="margin-bottom:16px"><b>Occupation & adéquation (loi en vigueur) — par jour</b><div class="row" style="margin-top:10px;gap:11px">`+
+   st.map((s,d)=>{const ok=s.under===0;const col=ok?"var(--sage)":"var(--red)";const bg=ok?"var(--sage-xl)":"var(--red-l)";
+    return `<div onclick="setDay(${d});setView('combo')" style="cursor:pointer;flex:1;min-width:120px;border-radius:14px;padding:12px;background:${bg}"><div style="font-weight:bold;font-size:13px">${DAYS[d]}</div><div class="mini">${dlabel(state.week,d)}</div><div style="font-size:27px;font-weight:bold;color:${col};margin:4px 0">${s.occ}%</div><div style="height:6px;background:#fff;border-radius:6px;overflow:hidden"><div style="width:${Math.min(100,s.occ)}%;height:100%;background:${col}"></div></div><div class="mini" style="margin-top:6px">👶 ${s.peak} pic · 🧑‍🍼 ${s.pros}${ok?"":" · ⚠"}</div></div>`;}).join("")+`</div></div>`;
+  h+=`<div class="card"><b>Alertes</b>`;if(!dd.length)h+=`<div style="padding:12px 0;color:var(--sage-d);font-weight:bold">✓ Aucune alerte cette semaine.</div>`;
   h+=dd.map(a=>`<div style="display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:${a[0]==="red"?"var(--red-l)":"var(--amber-l)"};margin-top:8px"><span>${a[0]==="red"?"⛔":"⚠️"}</span><span style="font-weight:bold;font-size:13.5px">${a[1]}</span></div>`).join("")+`</div>`;
   return h;};
 
-function timeline(rows,note){const a=toMin(CS),b=toMin(CE),span=b-a,pct=m=>((m-a)/span)*100;const rA=pct(toMin(RUSH[0])),rB=pct(toMin(RUSH[1]));
-  let hrs="";for(let x=a;x<=b;x+=60)hrs+=`<div style="position:absolute;left:${pct(x)}%;transform:translateX(-50%);font-size:11px;font-weight:bold;color:var(--soft)">${toHM(x).slice(0,2)}</div>`;
-  let body=rows.map(r=>{const slots=r.slots.map(s=>{const x=toMin(s.s),y=toMin(s.en);return `<div title="${s.s}–${s.en}" style="position:absolute;left:${pct(x)}%;width:${pct(y)-pct(x)}%;top:7px;height:30px;background:${r.color};color:#fff;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;overflow:hidden;box-shadow:0 4px 10px -7px rgba(0,0,0,.4)">${s.s}–${s.en}</div>`;}).join("");
-    return `<div style="display:flex;align-items:center;border-bottom:1px solid #f3eee2;min-height:44px"><div style="width:148px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding-right:8px"><span style="width:26px;height:26px;border-radius:8px;background:${r.color}22;color:${r.color};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${r.badge}</span><div style="min-width:0"><div style="font-weight:bold;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.label}</div><div class="mini">${r.sub}</div></div></div><div style="position:relative;flex:1;height:44px"><div style="position:absolute;left:${rA}%;width:${rB-rA}%;top:0;bottom:0;background:var(--terra);opacity:.07"></div>${slots}</div></div>`;}).join("");
-  return `<div class="tl"><div class="tlin"><div style="display:flex"><div style="width:148px;flex-shrink:0"></div><div style="position:relative;flex:1;height:22px;border-bottom:1px solid var(--line)"><div style="position:absolute;left:${rA}%;width:${rB-rA}%;top:-2px;bottom:0;background:var(--terra-l);opacity:.5;border-radius:6px"></div>${hrs}<div style="position:absolute;left:${(rA+rB)/2}%;transform:translateX(-50%);top:2px;font-size:10px;font-weight:bold;color:var(--terra)">RUSH</div></div></div>${body}</div></div>${note?`<p class="mini" style="margin-top:10px">${note}</p>`:""}`;}
-
-views.team=function(){const c=state.cid,d=state.day,sh=dayShifts(c,d);
-  const rows=team(c).map(e=>{const mine=sh.filter(s=>s.e===e.id);const aff=e.aff.find(a=>a[0]===c);
-    return {label:e.f+" "+e.l,sub:(e.role.split(" ")[0])+" · "+(aff?aff[1]:""),color:aff&&aff[1].includes("rempl")?"#B8B2DB":"#6E9079",badge:ini(e.f,e.l),slots:mine.map(s=>({s:s.s,en:s.en}))};}).filter(r=>r.slots.length);
-  const tot=sh.reduce((a,s)=>a+durh(s.s,s.en),0);
-  let h=head("Planning équipe",creche().name+" · timeline 06h–20h",`<button class="btn pri" onclick="openModal('shift',{c:'${c}',d:${d}})">+ Créneau</button>`);
-  h+=dayTabs();
-  h+=`<div class="card" style="margin-bottom:16px"><div class="row mini" style="margin-bottom:8px"><span>👥 ${new Set(sh.map(s=>s.e)).size} pros</span><span>⏱ ${tot.toFixed(1)} h</span><span style="color:var(--terra)">● rush 10h30–16h</span></div>${rows.length?timeline(rows,"Pour une coupure (poste en deux fois), ajoute simplement deux créneaux le même jour. Dernière prise de poste : 10h30 max."):'<div class="mini" style="padding:16px 0">Aucun créneau ce jour.</div>'}</div>`;
-  // tableau heures
-  h+=`<div class="card"><b>Heures de la semaine & heures supp.</b><div class="tl" style="margin-top:8px"><table style="min-width:560px"><thead><tr><th>Salarié</th>${DAYS.map(d=>`<th style="text-align:center">${d.slice(0,3)}</th>`).join("")}<th style="text-align:center">Total</th><th style="text-align:center">Contrat</th><th style="text-align:center">Supp.</th></tr></thead><tbody>`+
-    team(c).map(e=>{let t=0;const pd=DAYS.map((_,d)=>{const x=dayShifts(c,d).filter(s=>s.e===e.id).reduce((a,s)=>a+durh(s.s,s.en),0);t+=x;return x;});const sup=t-e.h;
-      return `<tr><td style="font-weight:bold">${e.f} ${e.l}</td>${pd.map(x=>`<td style="text-align:center;color:${x?"var(--ink)":"#cfc8b8"}">${x?x.toFixed(1):"–"}</td>`).join("")}<td style="text-align:center;font-weight:bold">${t.toFixed(1)}</td><td style="text-align:center;color:var(--soft)">${e.h}</td><td style="text-align:center"><span class="pill" style="background:${sup>0?"var(--amber-l)":"var(--sage-xl)"};color:${sup>0?"#9a6b22":"var(--sage-d)"}">${sup>0?"+":""}${sup.toFixed(1)}h</span></td></tr>`;}).join("")+
-    `</tbody></table></div></div>`;
+/* ---- PLANNING ÉQUIPE (grille semaine) ---- */
+views.team=function(){const c=state.cid;
+  let h=head("Planning équipe",creche().name+" · semaine du "+dlabel(state.week,0),pmodeBtns()+`<button class="btn ghost" onclick="openModal('addpro')">+ Positionner une pro</button><button class="btn pri" onclick="openModal('export')">⇪ Extraire / Envoyer</button>`);
+  if(state.pmode==="graph"){
+    h+=dayTabs();
+    const sh=dayShifts(c,state.day);
+    const rows=team(c).map(e=>{const aff=e.aff.find(a=>a[0]===c);const col=aff&&aff[1].includes("rempl")?"#9b93cf":"#6E9079";const ss=sh.filter(s=>s.e===e.id);
+      return {color:col,head:`<span style="width:26px;height:26px;border-radius:8px;background:${col}33;color:${col};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(e.f,e.l)}</span><div style="min-width:0"><b style="font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.f} ${e.l}</b><div class="mini">${e.role.split(" ")[0]}</div></div>`,slots:ss.map(s=>({s:s.s,en:s.en,del:`delShift('${s.id}')`})),add:`openModal('shift',{e:'${e.id}',d:${state.day},c:'${c}'})`};});
+    h+=`<div class="card" style="margin-bottom:16px"><div class="row mini" style="margin-bottom:10px"><span>👥 ${new Set(sh.map(s=>s.e)).size} pros</span><span>⏱ ${sh.reduce((a,s)=>a+durh(s.s,s.en),0).toFixed(1)} h</span><span style="color:var(--terra)">● rush 10h30–16h</span></div>${gantt(rows)}<p class="mini" style="margin-top:8px">Clique ✕ sur une barre pour la retirer, « + créneau » pour en ajouter. Deux créneaux le même jour = coupure.</p></div>`;
+  } else {
+    h+=`<div class="card" style="margin-bottom:16px"><div class="scroll"><table class="gt"><thead><tr><th>Salarié</th>`+DAYS.map((d,i)=>`<th>${d}<br><span class="mini">${dlabel(state.week,i)}</span></th>`).join("")+`</tr></thead><tbody>`;
+    team(c).forEach(e=>{const aff=e.aff.find(a=>a[0]===c);const col=aff&&aff[1].includes("rempl")?"var(--lav)":"var(--sage)";
+      h+=`<tr><td class="name"><div style="display:flex;align-items:center;gap:7px"><span style="width:26px;height:26px;border-radius:8px;background:${col}33;color:${col};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center">${ini(e.f,e.l)}</span><div><b style="font-size:13px">${e.f} ${e.l}</b><div class="mini">${e.role.split(" ")[0]} · ${aff?aff[1]:""}</div></div></div></td>`;
+      DAYS.forEach((d,i)=>{const ss=dayShifts(c,i).filter(s=>s.e===e.id);h+=`<td>`+ss.map(s=>`<div class="chip" style="background:${col}22;color:${col==="var(--sage)"?"var(--sage-d)":"#6a64a0"}"><span>${s.s}–${s.en}</span><span class="x" onclick="delShift('${s.id}')">✕</span></div>`).join("")+`<span class="add" onclick="openModal('shift',{e:'${e.id}',d:${i},c:'${c}'})">+ créneau</span></td>`;});
+      h+=`</tr>`;});
+    h+=`<tr class="totrow"><td class="name">Total / jour</td>`+DAYS.map((d,i)=>{const sh=dayShifts(c,i);const pros=new Set(sh.map(s=>s.e)).size;const hh=sh.reduce((a,s)=>a+durh(s.s,s.en),0);return `<td>${pros} pros · ${hh.toFixed(1)}h</td>`;}).join("")+`</tr>`;
+    h+=`</tbody></table></div></div>`;
+  }
+  h+=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><b>Moments clés de la journée</b><button class="btn ghost noprint" onclick="openModal('moment')">+ Ajouter</button></div><div style="margin-top:10px">`+
+   state.moments.slice().sort((a,b)=>toMin(a.t)-toMin(b.t)).map(mo=>{const rush=toMin(mo.t)>=toMin(RUSH[0])&&toMin(mo.t)<toMin(RUSH[1]);return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid #f3eee2"><span class="pill" style="background:${rush?"var(--terra-l)":"var(--sage-xl)"};color:${rush?"var(--terra)":"var(--sage-d)"}">${mo.t}</span><span style="font-weight:bold;font-size:13.5px;flex:1">${E(mo.n)}</span><button class="iconbtn noprint" style="color:var(--red)" onclick="delMoment('${mo.id}')">✕</button></div>`;}).join("")+`</div><p class="mini" style="margin-top:8px">Rush ${RUSH[0]}–${RUSH[1]} en orange. Crée, nomme et supprime librement.</p></div>`;
   return h;};
 
-views.kids=function(){const c=state.cid,d=state.day;const ks=kidsIn(c).filter(k=>kidSlot(k,d));
-  const rows=ks.map(k=>{return{label:k.f+" "+k.l,sub:GLAB[k.g]+(kidSegs(k,d).length>1?" · coupure":""),color:GCOL[k.g],badge:ini(k.f,k.l),slots:kidSegs(k,d)};});
-  const st=dayStats(c,d);
-  let h=head("Planning enfants",creche().name,`<button class="btn pri" onclick="openModal('child')">+ Enfant</button>`);
-  h+=dayTabs();
-  h+=`<div class="row" style="margin-bottom:14px">${kpi("Occupation",st.occ+"%","place-heures",st.occ>=85?"var(--red)":st.occ>=70?"var(--amber)":"var(--sage)")}${kpi("Enfants au pic",st.peak,"cap. "+creche().cap,"var(--lav)")}${kpi("Présences",ks.length,"ce jour","var(--terra)")}${kpi("Heures-enfant",st.ch+"h","cumulées","var(--amber)")}</div>`;
-  h+=`<div class="card"><div class="row mini" style="margin-bottom:8px">`+Object.keys(GLAB).map(g=>`<span style="color:${GCOL[g]}">● ${GLAB[g]}</span>`).join("")+`</div>${rows.length?timeline(rows):'<div class="mini" style="padding:16px 0">Aucun enfant prévu ce jour.</div>'}</div>`;
+/* ---- PLANNING ENFANTS (grille semaine) ---- */
+views.kids=function(){const c=state.cid;const ks=kidsIn(c);
+  let h=head("Planning enfants",creche().name+" · semaine du "+dlabel(state.week,0),pmodeBtns()+`<button class="btn pri" onclick="openModal('child')">+ Enfant</button>`);
+  if(state.pmode==="graph"){
+    h+=dayTabs();
+    const d=state.day,st=dayStats(c,d);
+    const rows=ks.filter(k=>kidSlot(k,d)).map(k=>{const col=GCOL[k.g];return {color:col,head:`<span style="width:26px;height:26px;border-radius:8px;background:${col}33;color:${col};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0" title="${k.note?E(k.note):""}">${ini(k.f,k.l)}</span><div style="min-width:0"><b style="font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${k.f} ${k.l}</b><div class="mini">${GLAB[k.g]}${k.spec?" · "+E(k.spec):""}</div></div>`,slots:kidSegs(k,d).map((s,idx)=>({s:s.s,en:s.en,del:`delSeg('${k.id}',${d},${idx})`})),add:`openModal('kseg',{k:'${k.id}',d:${d}})`};});
+    h+=`<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="row mini" style="gap:12px">`+Object.keys(GLAB).map(g=>`<span style="color:${GCOL[g]}">● ${GLAB[g]}</span>`).join("")+`</div><span class="pill" style="background:${st.occ>=85?"var(--red-l)":"var(--sage-xl)"};color:${st.occ>=85?"#9e463c":"var(--sage-d)"}">Occupation ${st.occ}% · ${st.peak} au pic</span></div>${rows.length?gantt(rows):'<div class="mini" style="padding:14px 0">Aucun enfant prévu ce jour.</div>'}<p class="mini" style="margin-top:8px">Une coupure apparaît en 2 barres avec un creux. Clique ✕ pour retirer, « + créneau » pour ajouter.</p></div>`;
+  } else {
+    h+=`<div class="card"><div class="row mini" style="margin-bottom:8px">`+Object.keys(GLAB).map(g=>`<span style="color:${GCOL[g]}">● ${GLAB[g]}</span>`).join("")+`<span style="color:var(--terra)">● coupure = 2 créneaux le même jour</span></div>`;
+    h+=`<div class="scroll"><table class="gt"><thead><tr><th>Enfant</th>`+DAYS.map((d,i)=>`<th>${d}<br><span class="mini">${dlabel(state.week,i)}</span></th>`).join("")+`</tr></thead><tbody>`;
+    ks.forEach(k=>{const col=GCOL[k.g];
+      h+=`<tr><td class="name"><div style="display:flex;align-items:center;gap:7px"><span style="width:26px;height:26px;border-radius:8px;background:${col}33;color:${col};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center">${ini(k.f,k.l)}</span><div style="flex:1"><b style="font-size:13px">${k.f} ${k.l}</b><div class="mini">${GLAB[k.g]}${k.spec?" · "+E(k.spec):""}</div></div><button class="iconbtn noprint" style="color:var(--red)" onclick="delKid('${k.id}')">🗑</button></div></td>`;
+      DAYS.forEach((d,i)=>{const sg=kidSegs(k,i);h+=`<td>`+sg.map((s,idx)=>`<div class="chip" style="background:${col}22;color:${col}"><span>${s.s}–${s.en}</span><span class="x" onclick="delSeg('${k.id}',${i},${idx})">✕</span></div>`).join("")+`<span class="add" onclick="openModal('kseg',{k:'${k.id}',d:${i}})">+ créneau</span></td>`;});
+      h+=`</tr>`;});
+    h+=`<tr class="totrow"><td class="name">Taux occupation</td>`+DAYS.map((d,i)=>{const st=dayStats(c,i);return `<td style="color:${st.occ>=85?"var(--red)":st.occ>=70?"var(--amber)":"var(--sage-d)"}">${st.occ}% · ${st.peak} au pic</td>`;}).join("")+`</tr>`;
+    h+=`</tbody></table></div></div>`;
+  }
   return h;};
 
-views.combo=function(){const c=state.cid,d=state.day;const mode=state._mode||"prev";const data=counts(c,d,mode);
-  const maxK=Math.max(creche().cap,...data.map(s=>s.k));const H=180,rA=toMin(RUSH[0]),rB=toMin(RUSH[1]);
-  const under=data.filter(s=>s.k>0&&s.p<reqPros(s.k)).length;
-  let bars=data.map(s=>{const rush=s.m>=rA&&s.m<rB;const u=s.k>0&&s.p<reqPros(s.k);
-    return `<div title="${toHM(s.m)} · ${s.k} enfants / ${s.p} pros" style="flex:1;position:relative;height:100%;display:flex;align-items:flex-end;background:${rush?"rgba(217,139,111,.07)":"transparent"}"><div style="width:100%;height:${(s.k/maxK)*H}px;background:${u?"var(--red)":"var(--sage)"};border-radius:4px 4px 0 0;opacity:.88;${u?"background-image:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,.45) 3px,rgba(255,255,255,.45) 6px)":""}"></div><div style="position:absolute;bottom:${(s.p/maxK)*H-2}px;left:0;right:0;height:3px;background:var(--terra)"></div></div>`;}).join("");
-  let ax=data.map(s=>`<div style="flex:1;text-align:center;font-size:9px;font-weight:bold;color:var(--soft)">${s.m%60===0?toHM(s.m).slice(0,2):""}</div>`).join("");
-  const choreo=[["10:30","Dernière prise de poste · 1 pro en cuisine"],["11:00","Repas bébés"],["11:30","Repas moyens/grands"],["12:15","Répartition à 3 : sol / change / cuisine"],["13:00","1ʳᵉ sieste bébés · 1ʳᵉ pause"],["13:15","Sieste moyens-grands · 1 pro/dortoir"],["13:45","Pause +45 min · premiers réveils"],["15:30","Goûter"],["16:30","Nettoyage · premiers départs"]];
-  let h=head("Vue combinée — Enfants × Équipe",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d),
-    `<div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">${[["prev","Prévisionnel"],["reel","Réel (pointage)"]].map(x=>`<button class="btn ${mode===x[0]?"pri":""}" style="${mode!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="state._mode='${x[0]}';render()">${x[1]}</button>`).join("")}</div>`);
-  h+=dayTabs();
-  h+=`<div class="card"><div class="row mini" style="margin-bottom:12px"><span><span style="display:inline-block;width:12px;height:12px;background:var(--sage);border-radius:3px;vertical-align:middle"></span> Enfants</span><span><span style="display:inline-block;width:12px;height:3px;background:var(--terra);vertical-align:middle"></span> Pros</span><span style="color:var(--red)">▦ encadrement insuffisant</span></div>`;
-  h+=`<div class="tl"><div class="tlin"><div style="position:relative;height:${H}px;border-bottom:2px solid var(--line);display:flex;align-items:flex-end;gap:2px"><div style="position:absolute;left:0;right:0;bottom:${(creche().cap/maxK)*H}px;border-top:2px dashed #cdbfae"><span style="position:absolute;right:0;top:-15px;font-size:10px;font-weight:bold;color:#a9987f">capacité ${creche().cap}</span></div>${bars}</div><div style="display:flex;margin-top:4px">${ax}</div></div></div></div>`;
-  h+=`<div class="row" style="margin-top:16px"><div class="card" style="flex:1;min-width:240px"><b>Lecture du jour</b><div style="font-weight:bold;color:var(--soft);line-height:2;margin-top:6px">Pic enfants : <b style="color:var(--ink)">${Math.max(...data.map(s=>s.k))}</b><br>Pros au pic : <b style="color:var(--ink)">${Math.max(...data.map(s=>s.p))}</b><br>Tranches en sous-effectif : <b style="color:${under?"var(--red)":"var(--sage-d)"}">${under}</b></div></div>`;
-  h+=`<div class="card" style="flex:1;min-width:240px"><b>Chorégraphie de l'après-midi</b><div style="margin-top:8px">`+choreo.map((s,i)=>{const rush=toMin(s[0])>=rA&&toMin(s[0])<rB;return `<div style="display:flex;gap:10px;padding-bottom:${i<choreo.length-1?10:0}px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:10px;height:10px;border-radius:50%;background:${rush?"var(--terra)":"var(--sage)"};flex-shrink:0"></div>${i<choreo.length-1?'<div style="width:2px;flex:1;background:var(--line)"></div>':""}</div><div style="margin-top:-3px"><span style="font-weight:bold;font-size:13px;color:${rush?"var(--terra)":"var(--sage-d)"}">${s[0]}</span> <span class="mini">${s[1]}</span></div></div>`;}).join("")+`</div></div></div>`;
+views.ann=function(){
+  let h=head("Annuaire","Tous les salariés et tous les enfants du réseau",`<div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">`+[["emps","Salariés"],["kids","Enfants"]].map(x=>`<button class="btn ${state.annTab===x[0]?"pri":""}" style="${state.annTab!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setAnn('${x[0]}')">${x[1]}</button>`).join("")+`</div>`);
+  if(state.annTab==="emps"){
+    const roles=[...new Set(state.emps.map(e=>e.role))];
+    h+=chips(["Tous",...roles],state.annFilt,"setAnnFilt");
+    const list=state.emps.filter(e=>state.annFilt==="Tous"||e.role===state.annFilt);
+    h+=`<div class="row">`+list.map(e=>`<div class="card" style="flex:1;min-width:230px;max-width:300px"><div style="display:flex;gap:10px;align-items:center"><span style="width:42px;height:42px;border-radius:13px;background:var(--sage-xl);color:var(--sage-d);font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(e.f,e.l)}</span><div style="flex:1;min-width:0"><b>${e.f} ${e.l}</b><div class="mini">${e.role}</div></div></div><div class="mini" style="margin-top:8px">Contrat ${e.h}h · planifié ${empWeekHours(e).toFixed(1)}h/sem</div><div class="row" style="gap:5px;margin-top:6px">`+e.aff.map(a=>`<span class="pill" style="background:var(--sage-xl);color:var(--sage-d)">${crName(a[0])} · ${a[1]==="dédié"?"dédié":"rempl."}</span>`).join("")+`</div><div class="row noprint" style="gap:6px;margin-top:10px"><button class="btn soft" style="flex:1" onclick="openModal('emp',{edit:'${e.id}'})">Modifier</button><button class="btn danger" onclick="delEmp('${e.id}')">Suppr.</button></div></div>`).join("")+`</div>`;
+  } else {
+    const cats=["Tous","Bébé","Moyen","Grand","Coupure"];
+    h+=chips(cats,state.annFilt,"setAnnFilt");
+    const f=state.annFilt;
+    const list=state.kids.filter(k=>f==="Tous"||(f==="Coupure"?isCoupure(k):GLAB[k.g]===f));
+    h+=`<div class="row">`+list.map(k=>{const col=GCOL[k.g];const coup=isCoupure(k);return `<div class="card" style="flex:1;min-width:230px;max-width:300px"><div style="display:flex;gap:10px;align-items:center"><span style="width:42px;height:42px;border-radius:13px;background:${col}22;color:${col};font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(k.f,k.l)}</span><div style="flex:1;min-width:0"><b>${k.f} ${k.l}</b><div class="mini">${crName(k.c)}</div></div></div><div class="row" style="gap:5px;margin-top:8px"><span class="pill" style="background:${col}22;color:${col}">${GLAB[k.g]}</span>${k.spec?`<span class="pill" style="background:var(--terra-l);color:var(--terra)">${E(k.spec)}</span>`:(coup?`<span class="pill" style="background:var(--terra-l);color:var(--terra)">coupure</span>`:"")}</div>${k.note?`<div class="mini" style="margin-top:8px;font-style:italic">📝 ${E(k.note)}</div>`:""}<div class="row noprint" style="gap:6px;margin-top:10px"><button class="btn soft" style="flex:1" onclick="openModal('child',{edit:'${k.id}'})">Modifier</button><button class="btn danger" onclick="delKid('${k.id}')">Suppr.</button></div></div>`;}).join("")+`</div>`;
+    if(!list.length)h+=`<div class="mini">Aucun enfant dans cette catégorie.</div>`;
+  }
   return h;};
 
+/* ---- VUE COMBINÉE (2 graphiques côte à côte) ---- */
+views.combo=function(){const c=state.cid,d=state.day,mode=state._mode||"prev",data=counts(c,d,mode);
+  const maxK=Math.max(creche().cap,...data.map(s=>s.k)),H=170;
+  const maxP=Math.max(2,...data.map(s=>Math.max(s.p,s.req)));
+  const rA=toMin(RUSH[0]),rB=toMin(RUSH[1]);
+  const under=data.filter(s=>s.k>0&&s.p<s.req);
+  const momMarks=s=>state.moments.some(mo=>{const mm=toMin(mo.t);return mm>=s.m&&mm<s.m+30;});
+  function axis(){return `<div style="display:flex;margin-top:4px">`+data.map(s=>`<div style="flex:1;text-align:center;font-size:9px;font-weight:bold;color:var(--soft)">${s.m%60===0?toHM(s.m).slice(0,2):""}</div>`).join("")+`</div>`;}
+  // graph enfants
+  let gA=`<div class="scroll"><div style="min-width:360px"><div style="position:relative;height:${H}px;border-bottom:2px solid var(--line);display:flex;align-items:flex-end;gap:1px"><div style="position:absolute;left:0;right:0;bottom:${creche().cap/maxK*H}px;border-top:2px dashed #cdbfae"><span style="position:absolute;right:0;top:-15px;font-size:10px;font-weight:bold;color:#a9987f">capacité ${creche().cap}</span></div>`+
+   data.map(s=>{const rush=s.m>=rA&&s.m<rB;return `<div title="${toHM(s.m)} · ${s.k} enfants (${s.nm} NM / ${s.march} M)" style="flex:1;height:100%;display:flex;flex-direction:column-reverse;background:${rush?"rgba(217,139,111,.07)":"transparent"}"><div style="height:${s.march/maxK*H}px;background:var(--sage);opacity:.85"></div><div style="height:${s.nm/maxK*H}px;background:var(--amber);opacity:.85;border-radius:0"></div></div>`;}).join("")+`</div>${axis()}</div></div>`;
+  // graph encadrement
+  let gB=`<div class="scroll"><div style="min-width:360px"><div style="position:relative;height:${H}px;border-bottom:2px solid var(--line);display:flex;align-items:flex-end;gap:1px">`+
+   data.map(s=>{const rush=s.m>=rA&&s.m<rB;const u=s.k>0&&s.p<s.req;return `<div title="${toHM(s.m)} · ${s.p} pros présents / ${s.req} requis" style="flex:1;position:relative;height:100%;display:flex;align-items:flex-end;background:${rush?"rgba(217,139,111,.07)":"transparent"}"><div style="width:100%;height:${s.req/maxP*H}px;background:${u?"var(--red)":"#cdbfae"};opacity:${u?.9:.5};border-radius:3px 3px 0 0;${u?"background-image:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,.45) 3px,rgba(255,255,255,.45) 6px)":""}"></div><div style="position:absolute;bottom:${s.p/maxP*H-2}px;left:0;right:0;height:3px;background:var(--sage-d)"></div></div>`;}).join("")+`</div>${axis()}</div></div>`;
+  const ratioTxt=state.ratio==="58"?"1 pro / 5 non-marcheurs + 1 / 8 marcheurs":"1 pro / 6 enfants";
+  let h=head("Vue combinée — Enfants × Encadrement",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d),
+    `<div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">${[["prev","Prévisionnel"],["reel","Réel"]].map(x=>`<button class="btn ${mode===x[0]?"pri":""}" style="${mode!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="state._mode='${x[0]}';render()">${x[1]}</button>`).join("")}</div>`);
+  h+=dayTabs();
+  h+=`<div class="row" style="gap:14px">`;
+  h+=`<div class="card" style="flex:1;min-width:300px"><div class="row" style="justify-content:space-between"><b>Enfants présents</b><span class="mini"><span style="color:var(--amber)">● non-marcheurs</span> <span style="color:var(--sage)">● marcheurs</span></span></div><div style="margin-top:10px">${gA}</div></div>`;
+  h+=`<div class="card" style="flex:1;min-width:300px"><div class="row" style="justify-content:space-between"><b>Encadrement vs loi</b><span class="mini"><span style="color:var(--sage-d)">▬ pros présents</span> · <span style="color:#a9987f">▮ min légal</span> · <span style="color:var(--red)">▦ insuffisant</span></span></div><div style="margin-top:10px">${gB}</div></div>`;
+  h+=`</div>`;
+  h+=`<div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><b>Conformité — loi en vigueur</b><div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">${[["6","1 pour 6"],["58","5 / 8"]].map(x=>`<button class="btn ${state.ratio===x[0]?"pri":""}" style="${state.ratio!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setRatio('${x[0]}')">${x[1]}</button>`).join("")}</div></div>`;
+  h+=`<p class="mini" style="margin:8px 0">Règle appliquée : ${ratioTxt}, avec au moins 2 pros dès le 4ᵉ enfant présent. Calcul sur les enfants réellement présents par tranche de 30 min.</p>`;
+  if(!under.length)h+=`<div style="color:var(--sage-d);font-weight:bold">✓ Encadrement conforme toute la journée.</div>`;
+  else h+=`<div style="color:#9e463c;font-weight:bold;margin-bottom:6px">${under.length} tranche(s) en sous-effectif :</div>`+under.map(s=>`<span class="pill" style="background:var(--red-l);color:#9e463c;margin:2px 4px 2px 0">${toHM(s.m)} · ${s.p}/${s.req} pros (${s.k} enf.)</span>`).join("");
+  h+=`</div>`;
+  return h;};
+
+/* ---- POINTAGE ---- */
 views.point=function(){const c=state.cid,d=state.day;const ks=kidsIn(c).filter(k=>kidSlot(k,d));
   const get=k=>state.pts[k.id+"_"+d]||{status:"attendu",arr:null,dep:null};
   const present=ks.filter(k=>get(k).status==="présent").length,att=ks.filter(k=>get(k).status==="attendu").length,parti=ks.filter(k=>get(k).status==="parti").length;
   let h=head("Pointage des enfants",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d)+" · ⏱ "+toHM(state.now));
+  h+=dayTabs();
   h+=`<div class="row" style="margin-bottom:16px">${kpi("Présents maintenant",present,"","var(--sage)")}${kpi("Attendus",att,"","var(--amber)")}${kpi("Repartis",parti,"","var(--lav)")}</div>`;
   h+=`<div class="card" style="padding:6px">`+ks.map(k=>{const p=get(k);const col=p.status==="présent"?"var(--sage)":p.status==="parti"?"var(--lav)":p.status==="absent"?"var(--red)":"var(--amber)";
     return `<div style="display:flex;align-items:center;gap:10px;padding:11px;border-bottom:1px solid #f3eee2;flex-wrap:wrap"><span style="width:36px;height:36px;border-radius:11px;background:${GCOL[k.g]}22;color:${GCOL[k.g]};font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(k.f,k.l)}</span><div style="flex:1;min-width:110px"><div style="font-weight:bold">${k.f} ${k.l}</div><div class="mini">Prévu ${kidSlot(k,d)} · ${GLAB[k.g]}</div></div><span class="pill" style="background:${col}22;color:${col}">${p.status}${p.arr?" · "+p.arr:""}${p.dep?"→"+p.dep:""}</span><div class="row" style="gap:6px"><button class="btn ${p.status==="attendu"?"pri":"ghost"}" onclick="point('${k.id}','present')">Arrivée</button><button class="btn soft" ${p.status!=="présent"?'style="opacity:.4"':""} onclick="point('${k.id}','parti')">Départ</button><button class="btn soft" style="color:var(--red)" onclick="point('${k.id}','absent')">Absent</button></div></div>`;}).join("")+`</div>`;
-  h+=`<p class="mini" style="margin-top:10px">Chaque pointage horodate l'heure réelle et alimente le « Réel » de la vue combinée.</p>`;
   return h;};
 
+/* ---- DEMANDES PARENTS ---- */
+views.req=function(){const pend=state.requests.filter(r=>r.status==="en attente");const done=state.requests.filter(r=>r.status!=="en attente");
+  let h=head("Demandes des parents","À valider par la gérante",`<button class="btn pri" onclick="openModal('parent')">Formulaire parent</button>`);
+  h+=`<div class="card" style="margin-bottom:16px"><b>En attente (${pend.length})</b>`;
+  if(!pend.length)h+=`<div class="mini" style="padding:12px 0">Aucune demande en attente.</div>`;
+  h+=pend.map(r=>{const cr=state.creches.find(x=>x.id===r.cid);return `<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #f3eee2;flex-wrap:wrap"><span class="pill" style="background:var(--amber-l);color:#9a6b22">en attente</span><b>${E(r.name)}</b><span class="mini">${cr?cr.name:""} · ${r.date} · ${r.s}–${r.en}${r.motif?" · "+E(r.motif):""}</span><div class="row" style="gap:6px;margin-left:auto"><button class="btn pri" onclick="reqAction('${r.id}',true)">Accepter</button><button class="btn soft" style="color:var(--red)" onclick="reqAction('${r.id}',false)">Refuser</button></div></div>`;}).join("")+`</div>`;
+  h+=`<div class="card"><b>Traitées</b>`;if(!done.length)h+=`<div class="mini" style="padding:12px 0">—</div>`;
+  h+=done.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #f3eee2"><span class="pill" style="background:${r.status==="acceptée"?"var(--sage-xl)":"var(--red-l)"};color:${r.status==="acceptée"?"var(--sage-d)":"#9e463c"}">${r.status}</span><b>${E(r.name)}</b><span class="mini">${r.date} · ${r.s}–${r.en}</span></div>`).join("")+`</div>`;
+  h+=`<div class="card" style="margin-top:16px"><b>Envoyer le formulaire aux parents</b><p class="mini" style="margin:6px 0 0">Une demande acceptée crée automatiquement la présence de l'enfant dans le planning. Pour collecter les demandes à distance, héberge ce fichier (ou partage-le) : chaque parent ouvre le « Formulaire parent » et envoie sa demande, qui apparaît ici.</p></div>`;
+  return h;};
+
+/* ---- ABSENCES ---- */
 views.abs=function(){const c=state.cid;const rempl=state.emps.filter(e=>e.aff.some(a=>a[0]===c&&a[1].includes("rempl")));
   const nameOf=(kind,id)=>{const o=kind==="emp"?state.emps.find(x=>x.id===id):state.kids.find(x=>x.id===id);return o?o.f+" "+o.l:"?";};
   let h=head("Absences & arrêts","Salariés et enfants",`<button class="btn pri" onclick="openModal('abs')">+ Déclarer</button>`);
-  h+=`<div class="card" style="margin-bottom:16px"><b>En cours</b>`;
-  if(!state.abs.length)h+=`<div class="mini" style="padding:14px 0">Aucune absence déclarée.</div>`;
+  h+=`<div class="card" style="margin-bottom:16px"><b>En cours</b>`;if(!state.abs.length)h+=`<div class="mini" style="padding:14px 0">Aucune absence déclarée.</div>`;
   h+=state.abs.map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f3eee2;flex-wrap:wrap"><span class="pill" style="background:${a.kind==="emp"?"var(--lav-l)":"var(--amber-l)"};color:${a.kind==="emp"?"#6a64a0":"#9a6b22"}">${a.kind==="emp"?"Salarié":"Enfant"}</span><b>${nameOf(a.kind,a.ref)}</b><span class="mini">${a.type} · ${DAYS[a.d0]}→${DAYS[a.d1]}</span>${a.kind==="emp"?`<span class="mini" style="color:var(--terra)">↳ remplaçants : ${rempl.map(r=>r.f).join(", ")||"aucun"}</span>`:""}<button class="btn soft" style="margin-left:auto;color:var(--red)" onclick="delAbs('${a.id}')">Suppr.</button></div>`).join("")+`</div>`;
-  h+=`<div class="card"><b>Remplaçants ponctuels — ${creche().name}</b><div class="row" style="margin-top:8px">`+rempl.map(r=>`<span class="pill" style="background:var(--sage-xl);color:var(--sage-d)">${r.f} ${r.l} · ${r.role.split(" ")[0]}</span>`).join("")+`</div></div>`;
+  h+=`<div class="card"><b>Remplaçants ponctuels — ${creche().name}</b><div class="row" style="margin-top:8px">`+rempl.map(r=>`<span class="pill" style="background:var(--sage-xl);color:var(--sage-d)">${r.f} ${r.l}</span>`).join("")+`</div></div>`;
   return h;};
 
+/* ---- RÉGLAGES ---- */
 views.set=function(){
   let h=head("Réglages & administration");
-  h+=`<div class="row"><div class="card" style="flex:1;min-width:280px"><div class="row" style="justify-content:space-between;align-items:center"><b>Crèches</b><button class="btn ghost" onclick="openModal('creche')">+ Crèche</button></div>`+
-    state.creches.map(c=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid #f3eee2"><span style="width:12px;height:12px;border-radius:4px;background:${c.color}"></span><b>${E(c.name)}</b><span class="mini">· ${c.cap} places · ${c.open}–${c.close}</span></div>`).join("")+`</div>`;
-  h+=`<div class="card" style="flex:1;min-width:280px"><div class="row" style="justify-content:space-between;align-items:center"><b>Salariés</b><button class="btn ghost" onclick="openModal('emp')">+ Salarié</button></div><div style="max-height:260px;overflow:auto">`+
-    state.emps.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3eee2"><span style="width:28px;height:28px;border-radius:9px;background:var(--sage-xl);color:var(--sage-d);font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center">${ini(e.f,e.l)}</span><div style="flex:1"><b style="font-size:13.5px">${e.f} ${e.l}</b><div class="mini">${e.role} · ${e.h}h · ${e.aff.map(a=>state.creches.find(x=>x.id===a[0]).name.slice(0,3)+"("+(a[1]==="dédié"?"D":"R")+")").join(" ")}</div></div></div>`).join("")+`</div></div></div>`;
-  h+=`<div class="card" style="margin-top:16px"><b>Formulaire parents</b><p class="mini" style="margin:6px 0 10px">Lien à partager aux familles pour demander un jour de présence. La demande arrive en file de validation.</p><button class="btn soft" onclick="openModal('parent')">Ouvrir le formulaire parent</button></div>`;
+  h+=`<div class="row"><div class="card" style="flex:1;min-width:300px"><div class="row" style="justify-content:space-between;align-items:center"><b>Crèches</b><button class="btn ghost" onclick="openModal('creche')">+ Crèche</button></div>`+
+   state.creches.map(c=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid #f3eee2"><span style="width:12px;height:12px;border-radius:4px;background:${c.color}"></span><b>${E(c.name)}</b><span class="mini">${c.cap} pl · ${c.open}–${c.close}</span><span style="margin-left:auto"><button class="iconbtn" onclick="openModal('creche',{edit:'${c.id}'})">✏️</button><button class="iconbtn" style="color:var(--red)" onclick="delCreche('${c.id}')">🗑</button></span></div>`).join("")+`</div>`;
+  h+=`<div class="card" style="flex:1;min-width:300px"><div class="row" style="justify-content:space-between;align-items:center"><b>Salariés</b><button class="btn ghost" onclick="openModal('emp')">+ Salarié</button></div><div style="max-height:300px;overflow:auto">`+
+   state.emps.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3eee2"><span style="width:28px;height:28px;border-radius:9px;background:var(--sage-xl);color:var(--sage-d);font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center">${ini(e.f,e.l)}</span><div style="flex:1"><b style="font-size:13.5px">${e.f} ${e.l}</b><div class="mini">${e.role} · ${e.h}h · ${e.aff.map(a=>state.creches.find(x=>x.id===a[0])?state.creches.find(x=>x.id===a[0]).name.slice(0,3)+"("+(a[1]==="dédié"?"D":"R")+")":"").join(" ")}</div></div><button class="iconbtn" onclick="openModal('emp',{edit:'${e.id}'})">✏️</button><button class="iconbtn" style="color:var(--red)" onclick="delEmp('${e.id}')">🗑</button></div>`).join("")+`</div></div></div>`;
   return h;};
 
-/* ===== MODALE ===== */
+/* ---- MODALES ---- */
 function fld(l,inner){return `<div><label>${l}</label>${inner}</div>`;}
-function modal(){const m=state.modal;const T={creche:"Nouvelle crèche",emp:"Nouveau salarié",child:"Nouvel enfant",shift:"Ajouter un créneau",abs:"Déclarer une absence",parent:"Demande de présence (parent)"}[m.type];
-  let b="";
-  if(m.type==="creche")b=fld("Nom",`<input id="m_name" placeholder="Ex. Lille-Centre">`)+`<div class="row"><div style="flex:1">${fld("Capacité",`<input id="m_cap" type="number" value="12">`)}</div><div style="flex:1">${fld("Couleur",`<input id="m_color" type="color" value="#6E9079" style="height:40px;padding:3px">`)}</div></div><div class="row"><div style="flex:1">${fld("Ouverture",`<input id="m_open" value="08:00">`)}</div><div style="flex:1">${fld("Fermeture",`<input id="m_close" value="18:30">`)}</div></div>`;
-  if(m.type==="emp")b=`<div class="row"><div style="flex:1">${fld("Prénom",`<input id="m_f">`)}</div><div style="flex:1">${fld("Nom",`<input id="m_l">`)}</div></div>`+fld("Rôle",`<select id="m_role">`+ROLES.map(r=>`<option>${r}</option>`).join("")+`</select>`)+`<div class="row"><div style="flex:1">${fld("Heures/sem",`<input id="m_h" type="number" value="35">`)}</div><div style="flex:1">${fld("Crèche",`<select id="m_c">`+state.creches.map(c=>`<option value="${c.id}">${E(c.name)}</option>`).join("")+`</select>`)}</div></div>`+fld("Affectation",`<select id="m_t"><option value="dédié">Dédié</option><option value="remplaçant ponctuel">Remplaçant ponctuel</option></select>`);
-  if(m.type==="child")b=`<div class="row"><div style="flex:1">${fld("Prénom",`<input id="m_f">`)}</div><div style="flex:1">${fld("Nom",`<input id="m_l">`)}</div></div>`+fld("Groupe",`<select id="m_g"><option value="bébé">Bébé</option><option value="moyen" selected>Moyen</option><option value="grand">Grand</option></select>`)+`<div class="mini" style="margin-top:4px">Créneau du matin (ou journée entière)</div><div class="row"><div style="flex:1">${fld("Arrivée",`<input id="m_s" value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e" value="17:00">`)}</div></div><div class="mini" style="margin-top:4px;color:var(--terra)">Coupure l'après-midi (optionnel — laisse vide si journée continue)</div><div class="row"><div style="flex:1">${fld("Retour",`<input id="m_s2" placeholder="14:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e2" placeholder="17:00">`)}</div></div>`+fld("Jours",`<div class="row" style="gap:6px">`+DAYS.map((d,i)=>`<label style="display:flex;align-items:center;gap:5px;background:var(--sage-xl);padding:6px 9px;border-radius:9px;cursor:pointer;text-transform:none;letter-spacing:0;margin:0"><input type="checkbox" id="m_d${i}" style="width:auto">${d.slice(0,3)}</label>`).join("")+`</div>`);
-  if(m.type==="shift")b=fld("Salarié",`<select id="m_emp"><option value="">— choisir —</option>`+team(m.c).map(e=>`<option value="${e.id}">${e.f} ${e.l}</option>`).join("")+`</select>`)+`<div class="row"><div style="flex:1">${fld("Début",`<input id="m_s" value="08:00">`)}</div><div style="flex:1">${fld("Fin",`<input id="m_e" value="16:00">`)}</div></div><div class="mini" style="color:var(--terra)">⚠ Dernière prise de poste conseillée : 10h30 max.</div>`;
+function modal(){const m=state.modal;
+  if(m.type==="export"){const txtAll=team(state.cid).map(empWeekText).join("\n\n——————————\n\n");
+    let b=`<p class="mini">Copie le planning d'une pro pour l'envoyer par SMS, WhatsApp ou e-mail, ou imprime tout en PDF.</p>`;
+    b+=team(state.cid).map(e=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3eee2"><b>${e.f} ${e.l}</b><button class="btn ghost" onclick='copyTxt(${JSON.stringify(empWeekText(e))})'>Copier</button></div>`).join("");
+    return wrapModal("Extraire / envoyer le planning",b,`<button class="btn soft" onclick="window.print()">🖨 Imprimer / PDF</button><button class="btn pri" onclick='copyTxt(${JSON.stringify(txtAll)})'>Copier tout</button>`);
+  }
+  let b="",save=`<button class="btn soft" onclick="closeModal()">Annuler</button><button class="btn pri" onclick="saveModal()">${m.type==="parent"?"Envoyer":"Enregistrer"}</button>`;
+  const ed=m.edit;
+  const cg=(id)=>ed?state.creches.find(x=>x.id===ed)[id]:"";
+  const eg=(id)=>ed?state.emps.find(x=>x.id===ed)[id]:"";
+  if(m.type==="creche")b=fld("Nom",`<input id="m_name" value="${ed?E(cg('name')):""}" placeholder="Ex. Lille-Centre">`)+`<div class="row"><div style="flex:1">${fld("Capacité",`<input id="m_cap" type="number" value="${ed?cg('cap'):12}">`)}</div><div style="flex:1">${fld("Couleur",`<input id="m_color" type="color" value="${ed?cg('color'):'#6E9079'}" style="height:40px;padding:3px">`)}</div></div><div class="row"><div style="flex:1">${fld("Ouverture",`<input id="m_open" value="${ed?cg('open'):'08:00'}">`)}</div><div style="flex:1">${fld("Fermeture",`<input id="m_close" value="${ed?cg('close'):'18:30'}">`)}</div></div>`;
+  if(m.type==="emp")b=`<div class="row"><div style="flex:1">${fld("Prénom",`<input id="m_f" value="${ed?E(eg('f')):""}">`)}</div><div style="flex:1">${fld("Nom",`<input id="m_l" value="${ed?E(eg('l')):""}">`)}</div></div>`+fld("Rôle",`<select id="m_role">`+ROLES.map(r=>`<option ${ed&&eg('role')===r?"selected":""}>${r}</option>`).join("")+`</select>`)+`<div class="row"><div style="flex:1">${fld("Heures/sem",`<input id="m_h" type="number" value="${ed?eg('h'):35}">`)}</div><div style="flex:1">${fld("Crèche",`<select id="m_c">`+state.creches.map(c=>`<option value="${c.id}" ${ed&&eg('aff')[0]&&eg('aff')[0][0]===c.id?"selected":(!ed&&c.id===state.cid?"selected":"")}>${E(c.name)}</option>`).join("")+`</select>`)}</div></div>`+fld("Affectation",`<select id="m_t"><option value="dédié">Dédié</option><option value="remplaçant ponctuel">Remplaçant ponctuel</option></select>`);
+  if(m.type==="child"){const ce=m.edit?state.kids.find(x=>x.id===m.edit):null;b=`<div class="row"><div style="flex:1">${fld("Prénom",`<input id="m_f" value="${ce?E(ce.f):""}">`)}</div><div style="flex:1">${fld("Nom",`<input id="m_l" value="${ce?E(ce.l):""}">`)}</div></div>`+fld("Groupe",`<select id="m_g"><option value="bébé" ${ce&&ce.g==="bébé"?"selected":""}>Bébé (non-marcheur)</option><option value="moyen" ${(!ce||ce.g==="moyen")?"selected":""}>Moyen</option><option value="grand" ${ce&&ce.g==="grand"?"selected":""}>Grand</option></select>`)+fld("Spécificité (optionnel)",`<input id="m_spec" list="specs" value="${ce?E(ce.spec):""}" placeholder="ex. coupure, PAI, adaptation…"><datalist id="specs"><option>coupure</option><option>PAI</option><option>adaptation</option><option>allergie</option></datalist>`)+fld("Note (optionnel)",`<textarea id="m_note" rows="2" placeholder="Remarque libre…">${ce?E(ce.note):""}</textarea>`)+(m.edit?"":`<div class="mini" style="margin-top:4px">Créneau du matin (ou journée entière)</div><div class="row"><div style="flex:1">${fld("Arrivée",`<input id="m_s" value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e" value="17:00">`)}</div></div><div class="mini" style="margin-top:4px;color:var(--terra)">Coupure l'après-midi (optionnel)</div><div class="row"><div style="flex:1">${fld("Retour",`<input id="m_s2" placeholder="14:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e2" placeholder="17:00">`)}</div></div>`+fld("Jours",`<div class="row" style="gap:6px">`+DAYS.map((d,i)=>`<label style="display:flex;align-items:center;gap:5px;background:var(--sage-xl);padding:6px 9px;border-radius:9px;cursor:pointer;text-transform:none;letter-spacing:0;margin:0"><input type="checkbox" id="m_d${i}" style="width:auto">${d.slice(0,3)}</label>`).join("")+`</div>`));}
+  if(m.type==="shift"){const e=state.emps.find(x=>x.id===m.e);b=fld("Salarié",`<select id="m_emp">`+team(m.c).map(x=>`<option value="${x.id}" ${m.e===x.id?"selected":""}>${x.f} ${x.l}</option>`).join("")+`</select>`)+`<div class="mini" style="margin-top:4px">${DAYS[m.d]} ${dlabel(state.week,m.d)}</div><div class="row"><div style="flex:1">${fld("Début",`<input id="m_s" value="08:00">`)}</div><div style="flex:1">${fld("Fin",`<input id="m_e" value="16:00">`)}</div></div><div class="mini" style="color:var(--terra)">Pour une coupure, ajoute un 2ᵉ créneau ensuite. Prise de poste : 10h30 max.</div>`;}
+  if(m.type==="kseg")b=`<div class="mini">${DAYS[m.d]} ${dlabel(state.week,m.d)}</div><div class="row"><div style="flex:1">${fld("Arrivée",`<input id="m_s" value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e" value="12:00">`)}</div></div><div class="mini" style="color:var(--terra)">Ajoute un 2ᵉ créneau l'après-midi pour une coupure.</div>`;
   if(m.type==="abs")b=fld("Concerne",`<select id="m_ref"><option value="">— choisir —</option><optgroup label="Salariés">`+state.emps.map(e=>`<option value="emp:${e.id}">${e.f} ${e.l}</option>`).join("")+`</optgroup><optgroup label="Enfants">`+kidsIn(state.cid).map(k=>`<option value="child:${k.id}">${k.f} ${k.l}</option>`).join("")+`</optgroup></select>`)+fld("Motif",`<select id="m_type"><option>Arrêt maladie</option><option>Congé</option><option>Absence</option><option>Férié</option></select>`)+`<div class="row"><div style="flex:1">${fld("Du",`<select id="m_d0">`+DAYS.map((d,i)=>`<option value="${i}">${d}</option>`).join("")+`</select>`)}</div><div style="flex:1">${fld("Au",`<select id="m_d1">`+DAYS.map((d,i)=>`<option value="${i}" ${i===4?"selected":""}>${d}</option>`).join("")+`</select>`)}</div></div>`;
-  if(m.type==="parent")b=fld("Enfant",`<select id="m_ref">`+kidsIn(state.cid).map(k=>`<option>${k.f} ${k.l}</option>`).join("")+`</select>`)+fld("Date",`<input type="date">`)+`<div class="row"><div style="flex:1">${fld("Arrivée",`<input value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input value="17:00">`)}</div></div>`+fld("Motif (optionnel)",`<input placeholder="Ex. journée supplémentaire">`);
-  return `<div class="modalbg" onclick="if(event.target===this)closeModal()"><div class="card fade" style="width:430px;max-width:100%;max-height:90vh;overflow:auto"><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:14px"><h1 style="font-size:21px">${T}</h1><button class="btn soft" onclick="closeModal()">✕</button></div><div style="display:flex;flex-direction:column;gap:11px">${b}</div><div class="row" style="margin-top:18px"><button class="btn soft" style="flex:1" onclick="closeModal()">Annuler</button><button class="btn pri" style="flex:2" onclick="saveModal()">${m.type==="parent"?"Envoyer":"Enregistrer"}</button></div></div></div>`;
+  if(m.type==="moment")b=`<div class="row"><div style="flex:0 0 110px">${fld("Heure",`<input id="m_t" value="10:30">`)}</div><div style="flex:1">${fld("Nom du moment",`<input id="m_n" placeholder="Ex. Atelier peinture">`)}</div></div>`;
+  if(m.type==="addpro"){const others=state.emps.filter(e=>!e.aff.some(a=>a[0]===state.cid));b=fld("Positionner une pro d'une autre crèche",`<select id="m_emp">`+(others.length?others.map(e=>`<option value="${e.id}">${e.f} ${e.l} (${e.role.split(" ")[0]})</option>`).join(""):`<option value="">Toutes les pros sont déjà ici</option>`)+`</select>`)+`<div class="mini" style="margin-top:6px">Elle sera ajoutée comme remplaçante ponctuelle de ${creche().name} et apparaîtra dans le planning.</div>`;}
+  if(m.type==="parent")b=fld("Nom de l'enfant",`<input id="m_name" placeholder="Prénom Nom">`)+fld("Date souhaitée",`<input id="m_date" type="date" value="${monthISO()}">`)+`<div class="row"><div style="flex:1">${fld("Arrivée",`<input id="m_s" value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e" value="17:00">`)}</div></div>`+fld("Motif (optionnel)",`<input id="m_motif" placeholder="Ex. journée supplémentaire">`);
+  const T={creche:ed?"Modifier la crèche":"Nouvelle crèche",emp:ed?"Modifier la fiche salarié":"Nouveau salarié",child:ed?"Modifier la fiche enfant":"Nouvel enfant",shift:"Ajouter un créneau",kseg:"Ajouter un créneau enfant",abs:"Déclarer une absence",moment:"Nouveau moment clé",addpro:"Positionner une pro",parent:"Demande de présence (parent)"}[m.type];
+  return wrapModal(T,b,save);
 }
+function wrapModal(title,body,footer){return `<div class="modalbg" onclick="if(event.target===this)closeModal()"><div class="card fade" style="width:440px;max-width:100%;max-height:90vh;overflow:auto"><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:14px"><h1 style="font-size:21px">${title}</h1><button class="btn soft" onclick="closeModal()">✕</button></div><div style="display:flex;flex-direction:column;gap:11px">${body}</div><div class="row" style="margin-top:18px;justify-content:flex-end">${footer}</div></div></div>`;}
+
+setInterval(()=>{state.now=realNow();if(!state.modal&&["dash","combo","point"].includes(state.view))render();},30000);
 render();
 </script>
 </body>
