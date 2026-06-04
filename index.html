@@ -70,7 +70,7 @@ const GLAB={"bébé":"Bébé","moyen":"Moyen","grand":"Grand"};
 const GCOL={"bébé":"#E0A458","moyen":"#6E9079","grand":"#B8B2DB"};
 const realNow=()=>{const d=new Date();return d.getHours()*60+d.getMinutes();};
 
-let state={view:"dash",cid:"rbx",week:0,day:0,now:realNow(),modal:null,ratio:"6",pmode:"graph",annTab:"emps",annFilt:"Tous",annGroup:"Tous",annCarac:"Toutes",statKid:null,statGran:"semaine",statDate:"2026-06-15",_printing:false,
+let state={view:"dash",cid:"rbx",week:0,day:0,now:realNow(),modal:null,ratio:"6",pmode:"graph",annTab:"emps",annFilt:"Tous",annGroup:"Tous",annCarac:"Toutes",statKid:null,statGran:"semaine",statDate:"2026-06-15",statScope:"one",session:null,adminCode:"0205",_printing:false,
   creches:[{id:"rbx",name:"Roubaix",cap:12,open:"08:00",close:"18:30",color:"#6E9079"},{id:"mcq",name:"Marcq-En-Baroeul",cap:12,open:"08:00",close:"18:00",color:"#C58A6A"}],
   emps:[
    {id:"e0",f:"Audrey",l:"JEROME",role:"Gérante",h:35,aff:[["rbx","dédié"],["mcq","dédié"]]},
@@ -100,6 +100,10 @@ state.kids.forEach(k=>{k.dob=k.dob||"";k.arr=k.arr||"2025-09-01";});
 try{const s=localStorage.getItem("bambino2");if(s){Object.assign(state,JSON.parse(s));state.modal=null;state.now=realNow();}}catch(e){}
 state.emps.forEach(e=>{if(e.mail==null)e.mail="";if(e.tel==null)e.tel="";});
 state.kids.forEach(k=>{if(k.spec==null)k.spec="";if(k.note==null)k.note="";if(k.dob==null)k.dob="";if(k.arr==null)k.arr="";});
+if(!Array.isArray(state.users)||!state.users.length){state.users=state.emps.map(e=>({id:e.id,name:e.f+" "+e.l,admin:e.f==="Audrey"}));state.users.push({id:"adm_adam",name:"Adam",admin:true},{id:"adm_fabien",name:"Fabien",admin:true});}
+if(state.session===undefined)state.session=null;
+if(!state.adminCode)state.adminCode="0205";
+if(typeof location!=="undefined"&&location.hash==="#presence"){state.session={userId:null,name:"Équipe",role:"employee"};state.view="point";}
 function persist(){try{const{view,modal,now,day,...k}=state;localStorage.setItem("bambino2",JSON.stringify(k));}catch(e){}}
 
 /* utils */
@@ -158,6 +162,32 @@ function statBars(items){const H=150;const max=Math.max(1,...items.map(i=>i.val)
 function vigKids(c){return kidsIn(c).filter(k=>childCaracs(k).length||k.note);}
 function vigilanceCard(c){const list=vigKids(c);return `<div class="card"><b>🔔 Vigilance — enfants à surveiller</b>`+(list.length?`<div style="margin-top:8px">`+list.map(k=>`<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #f3eee2"><span style="width:30px;height:30px;border-radius:9px;background:${GCOL[k.g]}22;color:${GCOL[k.g]};font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(k.f,k.l)}</span><div><b>${k.f} ${k.l}</b> <span class="mini">${GLAB[k.g]}</span><div style="margin-top:3px">`+childCaracs(k).map(x=>`<span class="pill" style="background:var(--terra-l);color:var(--terra);margin-right:4px">${E(x)}</span>`).join("")+`</div>${k.note?`<div class="mini" style="margin-top:3px;font-style:italic">📝 ${E(k.note)}</div>`:""}</div></div>`).join("")+`</div>`:`<div class="mini" style="margin-top:6px">Aucune caractéristique signalée.</div>`)+`</div>`;}
 function printVigilance(){state.modal=null;document.getElementById("modal").innerHTML="";document.getElementById("app").innerHTML=`<div class="card" style="margin-bottom:8px"><h1>Vigilance enfants — ${creche().name}</h1><div class="sub">Semaine du ${dlabel(state.week,0)}</div></div>`+vigilanceCard(state.cid);setTimeout(function(){window.print();render();},200);}
+/* ----- ACCÈS / DROITS ----- */
+function loginScreen(){const admins=state.users.filter(u=>u.admin),emps=state.users.filter(u=>!u.admin);
+  return `<div style="max-width:520px;margin:24px auto"><div class="card" style="text-align:center"><div style="font-size:42px">🐦</div><h1 style="margin-top:4px">Bambino<span style="color:var(--terra)">eco</span></h1><div class="sub">Choisis ton accès</div><div style="margin-top:18px;text-align:left"><div class="mini" style="margin-bottom:6px">👑 ADMINISTRATION — accès complet</div>`+admins.map(u=>`<button class="btn pri" style="width:100%;margin-bottom:8px;text-align:left" onclick="chooseUser('${u.id}')">${E(u.name)}</button>`).join("")+`<div class="mini" style="margin:14px 0 6px">🧑‍🍼 ÉQUIPE — présence des enfants uniquement</div>`+emps.map(u=>`<button class="btn soft" style="width:100%;margin-bottom:8px;text-align:left" onclick="chooseUser('${u.id}')">${E(u.name)}</button>`).join("")+`<button class="btn ghost" style="width:100%;margin-top:6px" onclick="enterPresence()">📱 Accès équipe générique (présence)</button></div></div></div>`;}
+function chooseUser(id){const u=state.users.find(x=>x.id===id);if(!u)return;if(u.admin){const code=prompt("Code administrateur :");if(code===null)return;if(code.trim()!==state.adminCode){alert("Code incorrect.");return;}}state.session={userId:u.id,name:u.name,role:u.admin?"admin":"employee"};if(!u.admin)state.view="point";persist();render();}
+function setAdminCode(){const n=prompt("Nouveau code administrateur :",state.adminCode);if(n!==null&&n.trim()){state.adminCode=n.trim();persist();toast("Code mis à jour ✓");}}
+function enterPresence(){state.session={userId:null,name:"Équipe",role:"employee"};state.view="point";persist();render();}
+function logout(){state.session=null;persist();render();}
+function toggleAdmin(id){const u=state.users.find(x=>x.id===id);if(u)u.admin=!u.admin;persist();render();}
+function delUser(id){if(confirm("Retirer cet accès ?")){state.users=state.users.filter(u=>u.id!==id);persist();render();}}
+function copyPresenceLink(){copyTxt(location.href.split("#")[0]+"#presence");}
+/* ----- RÉCAP DU JOUR ----- */
+function dayRecapCard(c,d){const ks=kidsIn(c).filter(k=>kidSlot(k,d));const cat={"présent":[],"parti":[],"absent":[],"attendu":[]};ks.forEach(k=>{const p=state.pts[k.id+"_"+d]||{status:"attendu"};(cat[p.status]||cat["attendu"]).push({k,p});});
+  const sec=(title,key,col,bg)=>{const arr=cat[key];return `<div style="margin-top:10px"><b style="color:${col}">${title} (${arr.length})</b>`+(arr.length?`<div style="margin-top:4px">`+arr.map(o=>`<span class="pill" style="background:${bg};color:${col};margin:2px 4px 2px 0">${o.k.f} ${o.k.l}${o.p.arr?" · "+o.p.arr+(o.p.dep?"→"+o.p.dep:""):""}</span>`).join("")+`</div>`:`<div class="mini">—</div>`)+`</div>`;};
+  return `<div class="card"><b>Récap présence — ${DAYS[d]} ${dlabel(state.week,d)} · ${crName(c)}</b>`+sec("Présents","présent","var(--sage-d)","var(--sage-xl)")+sec("Repartis","parti","#6a64a0","var(--lav-l)")+sec("Absents","absent","#9e463c","var(--red-l)")+sec("Pas encore arrivés","attendu","#9a6b22","var(--amber-l)")+`</div>`;}
+function printDayRecap(){state.modal=null;document.getElementById("modal").innerHTML="";document.getElementById("app").innerHTML=`<div class="card" style="margin-bottom:8px"><h1>Présence des enfants</h1></div>`+dayRecapCard(state.cid,state.day);setTimeout(function(){window.print();render();},200);}
+/* ----- SÉLECTEURS STATS ----- */
+function periodHours(k){const d=parseD(state.statDate)||new Date();if(state.statGran==="jour")return childHoursOnDate(k,d);if(state.statGran==="semaine"){const m=mondayOfDate(d);let h=0;for(let i=0;i<5;i++)h+=childHoursOnDate(k,addDays(m,i));return h;}if(state.statGran==="mois")return rangeHours(k,new Date(d.getFullYear(),d.getMonth(),1),new Date(d.getFullYear(),d.getMonth()+1,0));return rangeHours(k,new Date(d.getFullYear(),0,1),new Date(d.getFullYear(),11,31));}
+function setStatDate(v){if(v)state.statDate=v;render();}
+function setStatMonth(v){if(v){const p=v.split("-").map(Number);state.statDate=isoD(new Date(p[0],p[1]-1,1));}render();}
+function setStatYear(v){const d=parseD(state.statDate)||new Date();state.statDate=isoD(new Date(+v,d.getMonth(),1));render();}
+function setStatScope(s){state.statScope=s;render();}
+function statPicker(){const d=parseD(state.statDate)||new Date(),g=state.statGran;
+  if(g==="jour")return `<input type="date" value="${isoD(d)}" onchange="setStatDate(this.value)" style="width:auto">`;
+  if(g==="semaine")return `<input type="date" value="${isoD(d)}" onchange="setStatDate(this.value)" style="width:auto"> <span class="mini">jour de la semaine voulue</span>`;
+  if(g==="mois")return `<input type="month" value="${d.getFullYear()}-${pad2(d.getMonth()+1)}" onchange="setStatMonth(this.value)" style="width:auto">`;
+  const ys=[];for(let y=new Date().getFullYear()+1;y>=2023;y--)ys.push(y);return `<select onchange="setStatYear(this.value)" style="width:auto">`+ys.map(y=>`<option ${y===d.getFullYear()?"selected":""}>${y}</option>`).join("")+`</select>`;}
 const crName=id=>{const c=state.creches.find(x=>x.id===id);return c?c.name:"?";};
 function isCoupure(k){return (k.spec&&/coup/i.test(k.spec))||k.plan.some(p=>segs(p).length>1);}
 function empWeekHours(e){return state.shifts.filter(s=>s.e===e.id).reduce((a,s)=>a+durh(s.s,s.en),0);}
@@ -204,6 +234,7 @@ function saveModal(){const m=state.modal;
   if(m.type==="kseg"){if(!val("m_s")||!val("m_e"))return;const k=state.kids.find(x=>x.id===m.k);const arr=segs(k.plan[m.d]);arr.push({s:val("m_s"),en:val("m_e")});k.plan[m.d]=arr.map(x=>x.s+"-"+x.en).join(";");}
   if(m.type==="abs"){if(!val("m_ref"))return;const[kind,ref]=val("m_ref").split(":");state.abs.push({id:"a"+Date.now(),kind,ref,type:val("m_type"),d0:+val("m_d0"),d1:+val("m_d1")});}
   if(m.type==="moment"){if(!val("m_t")||!val("m_n"))return;state.moments.push({id:"mo"+Date.now(),t:val("m_t"),n:val("m_n")});}
+  if(m.type==="user"){if(!val("m_name"))return;state.users.push({id:"u"+Date.now(),name:val("m_name"),admin:val("m_admin")==="1"});}
   if(m.type==="addpro"){if(!val("m_emp"))return;const e=state.emps.find(x=>x.id===val("m_emp"));if(!e.aff.some(a=>a[0]===state.cid))e.aff.push([state.cid,"remplaçant ponctuel"]);}
   if(m.type==="parent"){if(!val("m_name"))return;state.requests.push({id:"r"+Date.now(),name:val("m_name"),cid:state.cid,date:val("m_date")||monthISO(),s:val("m_s")||"09:00",en:val("m_e")||"17:00",motif:val("m_motif"),status:"en attente"});toast("Demande envoyée ✓");}
   persist();state.modal=null;render();}
@@ -211,6 +242,8 @@ function monthISO(){const d=monday(state.week);return d.getFullYear()+"-"+String
 
 /* render */
 function render(){
+  if(!state.session){document.getElementById("ctrls").innerHTML="";document.getElementById("tabs").innerHTML="";document.getElementById("app").innerHTML=loginScreen();document.getElementById("modal").innerHTML="";return;}
+  if(state.session.role==="employee")state.view="point";
   document.getElementById("ctrls").innerHTML=ctrls();
   document.getElementById("tabs").innerHTML=tabs();
   document.getElementById("app").innerHTML='<div class="fade">'+views[state.view]()+'</div>';
@@ -218,9 +251,11 @@ function render(){
 }
 function ctrls(){let h=`<select onchange="setCreche(this.value)" style="width:auto">`+state.creches.map(c=>`<option value="${c.id}" ${c.id===state.cid?"selected":""}>${E(c.name)}</option>`).join("")+`</select>`;
   if(["team","kids","combo","point"].includes(state.view))h+=`<button class="btn soft" onclick="setWeek(-1)">‹</button><span class="mini" style="align-self:center;min-width:118px;text-align:center">Sem. ${dlabel(state.week,0)}→${dlabel(state.week,4)}</span><button class="btn soft" onclick="setWeek(1)">›</button>`;
-  const pend=state.requests.filter(r=>r.status==="en attente").length;
-  h+=`<span class="mini" style="align-self:center">⏱ ${toHM(state.now)}</span>`;return h;}
+  h+=`<span class="mini" style="align-self:center">⏱ ${toHM(state.now)}</span>`;
+  h+=`<span class="mini" style="align-self:center">${state.session.role==="admin"?"👑":"🧑‍🍼"} ${E(state.session.name)}</span><button class="btn soft" onclick="logout()">Quitter</button>`;
+  return h;}
 function tabs(){const pend=state.requests.filter(r=>r.status==="en attente").length;
+  if(state.session.role==="employee")return `<div class="tab on">Présence des enfants</div>`;
   const T=[["dash","Tableau de bord"],["team","Planning équipe"],["kids","Planning enfants"],["stats","Heures enfants"],["combo","Vue combinée"],["point","Pointage"],["req","Demandes"+(pend?" ("+pend+")":"")],["ann","Annuaire"],["abs","Absences"],["set","Réglages"]];
   return T.map(([k,l])=>`<div class="tab ${state.view===k?"on":""}" onclick="setView('${k}')">${l}</div>`).join("");}
 function head(t,s,act){return `<div class="row" style="align-items:flex-end;justify-content:space-between;margin-bottom:16px"><div><h1>${t}</h1>${s?`<div class="sub">${s}</div>`:""}</div><div class="row noprint">${act||""}</div></div>`;}
@@ -316,12 +351,28 @@ views.ann=function(){
 
 /* ---- VUE COMBINÉE (2 graphiques côte à côte) ---- */
 views.stats=function(){
-  if(!state.statKid||!state.kids.find(k=>k.id===state.statKid))state.statKid=(state.kids[0]||{}).id;
-  const k=state.kids.find(x=>x.id===state.statKid);
+  const c=state.cid;
   let h=head("Heures des enfants","Temps de présence — jour, semaine, mois, année");
-  if(!k)return h+`<div class="card mini">Aucun enfant enregistré.</div>`;
-  h+=`<div class="card" style="margin-bottom:16px"><div class="row" style="gap:12px;align-items:flex-end"><div style="flex:1;min-width:200px"><label>Enfant</label><select onchange="setStatKid(this.value)">`+state.kids.slice().sort((a,b)=>(a.f+a.l).localeCompare(b.f+b.l)).map(c=>`<option value="${c.id}" ${c.id===k.id?"selected":""}>${c.f} ${c.l} — ${crName(c.c)}</option>`).join("")+`</select></div><div><label>Vue</label><div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">`+[["jour","Jour"],["semaine","Semaine"],["mois","Mois"],["annee","Année"]].map(x=>`<button class="btn ${state.statGran===x[0]?"pri":""}" style="${state.statGran!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setStatGran('${x[0]}')">${x[1]}</button>`).join("")+`</div></div></div><div class="mini" style="margin-top:8px">${k.dob?"Né(e) le "+k.dob+" ("+ageStr(k.dob)+") · ":""}Arrivé(e) le ${k.arr||"—"}${childCaracs(k).length?" · "+childCaracs(k).join(", "):""}</div></div>`;
+  // barre de contrôle
+  h+=`<div class="card" style="margin-bottom:16px"><div class="row" style="gap:12px;align-items:flex-end">`;
+  h+=`<div><label>Portée</label><div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">`+[["one","Un enfant"],["all","Vue générale"]].map(x=>`<button class="btn ${state.statScope===x[0]?"pri":""}" style="${state.statScope!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setStatScope('${x[0]}')">${x[1]}</button>`).join("")+`</div></div>`;
+  if(state.statScope==="one"){
+    if(!state.statKid||!state.kids.find(k=>k.id===state.statKid))state.statKid=(state.kids[0]||{}).id;
+    h+=`<div style="flex:1;min-width:200px"><label>Enfant</label><select onchange="setStatKid(this.value)">`+state.kids.slice().sort((a,b)=>(a.f+a.l).localeCompare(b.f+b.l)).map(x=>`<option value="${x.id}" ${x.id===state.statKid?"selected":""}>${x.f} ${x.l} — ${crName(x.c)}</option>`).join("")+`</select></div>`;
+  }
+  h+=`<div><label>Vue</label><div class="row" style="gap:4px;background:var(--sage-xl);padding:4px;border-radius:11px">`+[["jour","Jour"],["semaine","Semaine"],["mois","Mois"],["annee","Année"]].map(x=>`<button class="btn ${state.statGran===x[0]?"pri":""}" style="${state.statGran!==x[0]?"background:transparent;color:var(--sage-d)":""}" onclick="setStatGran('${x[0]}')">${x[1]}</button>`).join("")+`</div></div>`;
+  h+=`<div><label>Période exacte</label>${statPicker()}</div>`;
+  h+=`</div></div>`;
   const d=parseD(state.statDate)||new Date();const MN=["Janv.","Févr.","Mars","Avr.","Mai","Juin","Juil.","Août","Sept.","Oct.","Nov.","Déc."];
+  const perLabel=state.statGran==="jour"?frDate(d):state.statGran==="semaine"?("Semaine du "+pad2(mondayOfDate(d).getDate())+"/"+pad2(mondayOfDate(d).getMonth()+1)):state.statGran==="mois"?(MN[d.getMonth()]+" "+d.getFullYear()):("Année "+d.getFullYear());
+  if(state.statScope==="all"){
+    const items=kidsIn(c).map(k=>({label:ini(k.f,k.l),val:periodHours(k)})).sort((a,b)=>b.val-a.val);
+    const tot=items.reduce((a,i)=>a+i.val,0);
+    h+=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px"><button class="btn soft" onclick="statNav(-1)">‹</button><div style="text-align:center"><div style="font-weight:bold;font-size:16px">${perLabel} — tous les enfants (${crName(c)})</div><div class="mini">Total cumulé : <b style="color:var(--sage-d)">${tot.toFixed(1)} h</b></div></div><button class="btn soft" onclick="statNav(1)">›</button></div>${items.length?statBars(items):'<div class="mini">Aucun enfant.</div>'}<p class="mini" style="margin-top:10px">Heures de chaque enfant sur la période (initiales). Survole une barre pour le détail.</p></div>`;
+    return h;
+  }
+  const k=state.kids.find(x=>x.id===state.statKid);if(!k)return h+`<div class="card mini">Aucun enfant enregistré.</div>`;
+  h+=`<div class="mini" style="margin:-4px 0 12px">${k.dob?"Né(e) le "+k.dob+" ("+ageStr(k.dob)+") · ":""}Arrivé(e) le ${k.arr||"—"}${childCaracs(k).length?" · "+childCaracs(k).join(", "):""}</div>`;
   let label="",total=0,body="";
   if(state.statGran==="jour"){const hh=childHoursOnDate(k,d);total=hh;label=frDate(d);const wd=d.getDay();const sg=(wd>=1&&wd<=5)?segs(k.plan[wd-1]):[];
     body=`<div class="kpiv" style="color:var(--sage);font-size:40px">${hh.toFixed(1)} h</div>`+(sg.length?`<div class="row" style="gap:6px;margin-top:8px">`+sg.map(s=>`<span class="pill" style="background:var(--sage-xl);color:var(--sage-d)">${s.s}–${s.en}</span>`).join("")+`</div>`:`<div class="mini" style="margin-top:6px">Pas de présence prévue ce jour.</div>`);
@@ -363,7 +414,7 @@ views.combo=function(){const c=state.cid,d=state.day,mode=state._mode||"prev",da
 views.point=function(){const c=state.cid,d=state.day;const ks=kidsIn(c).filter(k=>kidSlot(k,d));
   const get=k=>state.pts[k.id+"_"+d]||{status:"attendu",arr:null,dep:null};
   const present=ks.filter(k=>get(k).status==="présent").length,att=ks.filter(k=>get(k).status==="attendu").length,parti=ks.filter(k=>get(k).status==="parti").length;
-  let h=head("Pointage des enfants",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d)+" · ⏱ "+toHM(state.now));
+  let h=head("Pointage des enfants",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d)+" · ⏱ "+toHM(state.now),`<button class="btn pri" onclick="printDayRecap()">🖨 Récap présents / absents</button>`);
   h+=dayTabs();
   h+=`<div class="row" style="margin-bottom:16px">${kpi("Présents maintenant",present,"","var(--sage)")}${kpi("Attendus",att,"","var(--amber)")}${kpi("Repartis",parti,"","var(--lav)")}</div>`;
   h+=`<div class="card" style="padding:6px">`+ks.map(k=>{const p=get(k);const col=p.status==="présent"?"var(--sage)":p.status==="parti"?"var(--lav)":p.status==="absent"?"var(--red)":"var(--amber)";
@@ -397,6 +448,11 @@ views.set=function(){
    state.creches.map(c=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid #f3eee2"><span style="width:12px;height:12px;border-radius:4px;background:${c.color}"></span><b>${E(c.name)}</b><span class="mini">${c.cap} pl · ${c.open}–${c.close}</span><span style="margin-left:auto"><button class="iconbtn" onclick="openModal('creche',{edit:'${c.id}'})">✏️</button><button class="iconbtn" style="color:var(--red)" onclick="delCreche('${c.id}')">🗑</button></span></div>`).join("")+`</div>`;
   h+=`<div class="card" style="flex:1;min-width:300px"><div class="row" style="justify-content:space-between;align-items:center"><b>Salariés</b><button class="btn ghost" onclick="openModal('emp')">+ Salarié</button></div><div style="max-height:300px;overflow:auto">`+
    state.emps.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #f3eee2"><span style="width:28px;height:28px;border-radius:9px;background:var(--sage-xl);color:var(--sage-d);font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center">${ini(e.f,e.l)}</span><div style="flex:1"><b style="font-size:13.5px">${e.f} ${e.l}</b><div class="mini">${e.role} · ${e.h}h · ${e.aff.map(a=>state.creches.find(x=>x.id===a[0])?state.creches.find(x=>x.id===a[0]).name.slice(0,3)+"("+(a[1]==="dédié"?"D":"R")+")":"").join(" ")}</div></div><button class="iconbtn" onclick="openModal('emp',{edit:'${e.id}'})">✏️</button><button class="iconbtn" style="color:var(--red)" onclick="delEmp('${e.id}')">🗑</button></div>`).join("")+`</div></div></div>`;
+  // Accès & droits
+  h+=`<div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><b>Accès & droits</b><button class="btn ghost" onclick="openModal('user')">+ Accès</button></div><p class="mini" style="margin:6px 0 10px">👑 Administrateur = accès complet · 🧑‍🍼 Équipe = pointage uniquement. Active/désactive l'administration d'un clic.</p>`+
+   state.users.map(u=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f3eee2"><span>${u.admin?"👑":"🧑‍🍼"}</span><b style="flex:1">${E(u.name)}</b><button class="btn ${u.admin?"pri":"soft"}" onclick="toggleAdmin('${u.id}')">${u.admin?"Administrateur":"Équipe seule"}</button><button class="iconbtn" style="color:var(--red)" onclick="delUser('${u.id}')">🗑</button></div>`).join("")+
+   `<div style="margin-top:12px;padding-top:12px;border-top:2px solid var(--sage-l)"><b>Code administrateur</b> <span class="mini">demandé à chaque connexion admin</span><div style="margin-top:6px"><button class="btn soft" onclick="setAdminCode()">🔒 Modifier le code</button></div></div>`+
+   `<div style="margin-top:12px;padding-top:12px;border-top:2px solid var(--sage-l)"><b>Lien équipe (présence sur téléphone)</b><p class="mini" style="margin:6px 0 8px">Envoie ce lien à tes salariées : elles arrivent directement sur la page de présence (présent / départ / absent), sans le reste de l'outil. (Nécessite que le fichier soit hébergé en ligne.)</p><button class="btn pri" onclick="copyPresenceLink()">🔗 Copier le lien équipe</button></div></div>`;
   return h;};
 
 /* ---- MODALES ---- */
@@ -428,7 +484,8 @@ function modal(){const m=state.modal;
   if(m.type==="moment")b=`<div class="row"><div style="flex:0 0 110px">${fld("Heure",`<input id="m_t" value="10:30">`)}</div><div style="flex:1">${fld("Nom du moment",`<input id="m_n" placeholder="Ex. Atelier peinture">`)}</div></div>`;
   if(m.type==="addpro"){const others=state.emps.filter(e=>!e.aff.some(a=>a[0]===state.cid));b=fld("Positionner une pro d'une autre crèche",`<select id="m_emp">`+(others.length?others.map(e=>`<option value="${e.id}">${e.f} ${e.l} (${e.role.split(" ")[0]})</option>`).join(""):`<option value="">Toutes les pros sont déjà ici</option>`)+`</select>`)+`<div class="mini" style="margin-top:6px">Elle sera ajoutée comme remplaçante ponctuelle de ${creche().name} et apparaîtra dans le planning.</div>`;}
   if(m.type==="parent")b=fld("Nom de l'enfant",`<input id="m_name" placeholder="Prénom Nom">`)+fld("Date souhaitée",`<input id="m_date" type="date" value="${monthISO()}">`)+`<div class="row"><div style="flex:1">${fld("Arrivée",`<input id="m_s" value="09:00">`)}</div><div style="flex:1">${fld("Départ",`<input id="m_e" value="17:00">`)}</div></div>`+fld("Motif (optionnel)",`<input id="m_motif" placeholder="Ex. journée supplémentaire">`);
-  const T={creche:ed?"Modifier la crèche":"Nouvelle crèche",emp:ed?"Modifier la fiche salarié":"Nouveau salarié",child:ed?"Modifier la fiche enfant":"Nouvel enfant",shift:"Ajouter un créneau",kseg:"Ajouter un créneau enfant",abs:"Déclarer une absence",moment:"Nouveau moment clé",addpro:"Positionner une pro",parent:"Demande de présence (parent)"}[m.type];
+  if(m.type==="user")b=fld("Nom",`<input id="m_name" placeholder="Prénom Nom">`)+fld("Droits",`<select id="m_admin"><option value="0">🧑‍🍼 Équipe (pointage seul)</option><option value="1">👑 Administrateur (accès complet)</option></select>`);
+  const T={creche:ed?"Modifier la crèche":"Nouvelle crèche",emp:ed?"Modifier la fiche salarié":"Nouveau salarié",child:ed?"Modifier la fiche enfant":"Nouvel enfant",shift:"Ajouter un créneau",kseg:"Ajouter un créneau enfant",abs:"Déclarer une absence",moment:"Nouveau moment clé",addpro:"Positionner une pro",parent:"Demande de présence (parent)",user:"Nouvel accès"}[m.type];
   return wrapModal(T,b,save);
 }
 function wrapModal(title,body,footer){return `<div class="modalbg" onclick="if(event.target===this)closeModal()"><div class="card fade" style="width:440px;max-width:100%;max-height:90vh;overflow:auto"><div class="row" style="justify-content:space-between;align-items:center;margin-bottom:14px"><h1 style="font-size:21px">${title}</h1><button class="btn soft" onclick="closeModal()">✕</button></div><div style="display:flex;flex-direction:column;gap:11px">${body}</div><div class="row" style="margin-top:18px;justify-content:flex-end">${footer}</div></div></div>`;}
