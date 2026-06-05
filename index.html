@@ -29,6 +29,10 @@
   .brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:13px;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
   .tab{padding:8px 13px;border-radius:11px;cursor:pointer;font-weight:bold;font-size:14px;color:var(--soft);white-space:nowrap}
   .tab:hover{background:var(--sage-xl);color:var(--sage-d)}.tab.on{background:var(--sage);color:#fff}
+  .menuwrap{position:relative}
+  .dd{position:absolute;top:100%;left:0;margin-top:6px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 14px 34px -12px rgba(0,0,0,.32);padding:6px;z-index:60;min-width:200px}
+  .ddi{padding:9px 12px;border-radius:9px;cursor:pointer;white-space:nowrap;font-size:14px;font-weight:bold;color:var(--ink)}
+  .ddi:hover{background:var(--sage-xl);color:var(--sage-d)}.ddi.on{background:var(--sage);color:#fff}
   .kpi{flex:1;min-width:140px}.kpiv{font-size:30px;font-weight:bold;line-height:1.1;margin-top:3px}
   .mini{font-size:12px;color:var(--soft);font-weight:bold}
   .gt{width:100%;border-collapse:separate;border-spacing:0;min-width:760px}
@@ -56,7 +60,7 @@
       <div class="brand"><div class="logo">🐦</div><div><div style="font-weight:bold;font-size:19px">Bambino<span style="color:var(--terra)">eco</span></div><div class="mini" style="letter-spacing:.08em">PILOTAGE RÉSEAU</div></div></div>
       <div style="margin-left:auto" class="row" id="ctrls"></div>
     </div>
-    <div class="row" id="tabs" style="margin-top:10px;gap:5px;overflow-x:auto"></div>
+    <div class="row" id="tabs" style="margin-top:10px;gap:5px;flex-wrap:wrap;overflow:visible"></div>
   </div>
 </header>
 <div class="wrap" id="app" style="padding-top:20px"></div>
@@ -70,7 +74,7 @@ const GLAB={"bébé":"Bébé","moyen":"Moyen","grand":"Grand"};
 const GCOL={"bébé":"#E0A458","moyen":"#6E9079","grand":"#B8B2DB"};
 const realNow=()=>{const d=new Date();return d.getHours()*60+d.getMinutes();};
 
-let state={view:"dash",cid:"rbx",week:0,day:0,now:realNow(),modal:null,ratio:"6",pmode:"graph",annTab:"emps",annFilt:"Tous",annGroup:"Tous",annCarac:"Toutes",annCreche:"Toutes",absTab:"emp",absMotifFilt:"Tous",showAbsMotif:true,absMotifsEmp:["Hospitalisation","Accident de travail","Congé maternité","Grève","Accident de trajet","Mise à pied disciplinaire","Mise à pied conservatoire","Révision","Maladie Pro","Autre"],absMotifsKid:["Maladie","Vacances","Rendez-vous médical","Autre"],statKid:null,statEmp:null,statGran:"semaine",statDate:"2026-06-15",statScope:"one",statWho:"kids",session:null,adminCode:"0205",empPts:{},valSel:[],_parentSent:false,_printing:false,
+let state={view:"dash",cid:"rbx",week:0,day:0,now:realNow(),modal:null,ratio:"6",pmode:"graph",annTab:"emps",annFilt:"Tous",annGroup:"Tous",annCarac:"Toutes",annCreche:"Toutes",absTab:"emp",absMotifFilt:"Tous",showAbsMotif:true,absMotifsEmp:["Hospitalisation","Accident de travail","Congé maternité","Grève","Accident de trajet","Mise à pied disciplinaire","Mise à pied conservatoire","Révision","Maladie Pro","Autre"],absMotifsKid:["Maladie","Vacances","Rendez-vous médical","Autre"],statKid:null,statEmp:null,statGran:"semaine",statDate:"2026-06-15",statScope:"one",statWho:"kids",menuOpen:null,session:null,adminCode:"0205",empPts:{},valSel:[],_parentSent:false,_printing:false,
   creches:[{id:"rbx",name:"Roubaix",cap:14,open:"08:00",close:"18:30",color:"#6E9079"},{id:"mcq",name:"Marcq-En-Baroeul",cap:14,open:"08:00",close:"18:00",color:"#C58A6A"}],
   emps:[
    {id:"e0",f:"Audrey",l:"JEROME",role:"Gérante",h:35,aff:[["rbx","dédié"],["mcq","dédié"]]},
@@ -155,7 +159,8 @@ function dayStats(c,d){const cr=state.creches.find(x=>x.id===c);let ch=0;kidsIn(
   return{occ,ch:Math.round(ch),peak,under,pros:new Set(dayShifts(c,d).map(s=>s.e)).size};}
 
 /* actions */
-function setView(v){state.view=v;render();}
+function setView(v){state.view=v;state.menuOpen=null;render();}
+function toggleMenu(g){state.menuOpen=state.menuOpen===g?null:g;render();}
 function setCreche(v){state.cid=v;render();}
 function setWeek(d){state.week+=d;render();}
 function setDay(d){state.day=d;render();}
@@ -197,7 +202,7 @@ function printVigilance(){state.modal=null;document.getElementById("modal").inne
 function loginScreen(){const admins=state.users.filter(u=>u.admin),emps=state.users.filter(u=>!u.admin);
   return `<div style="max-width:520px;margin:24px auto"><div class="card" style="text-align:center"><div style="font-size:42px">🐦</div><h1 style="margin-top:4px">Bambino<span style="color:var(--terra)">eco</span></h1><div class="sub">Choisis ton accès</div><div style="margin-top:18px;text-align:left"><div class="mini" style="margin-bottom:6px">👑 ADMINISTRATION — accès complet</div>`+admins.map(u=>`<button class="btn pri" style="width:100%;margin-bottom:8px;text-align:left" onclick="chooseUser('${u.id}')">${E(u.name)}</button>`).join("")+`<div class="mini" style="margin:14px 0 6px">🧑‍🍼 ÉQUIPE — présence des enfants uniquement</div>`+emps.map(u=>`<button class="btn soft" style="width:100%;margin-bottom:8px;text-align:left" onclick="chooseUser('${u.id}')">${E(u.name)}</button>`).join("")+`<button class="btn ghost" style="width:100%;margin-top:6px" onclick="enterPresence()">📱 Accès équipe générique (présence)</button></div></div></div>`;}
 function chooseUser(id){const u=state.users.find(x=>x.id===id);if(!u)return;if(u.admin){const code=prompt("Code administrateur :");if(code===null)return;if(code.trim()!==state.adminCode){alert("Code incorrect.");return;}}state.session={userId:u.id,name:u.name,role:u.admin?"admin":"employee"};if(!u.admin){const av=(u.pages&&u.pages.length)?u.pages:["point"];state.view=av[0];}persist();render();}
-function allowedViews(){if(!state.session)return [];if(state.session.role==="admin")return ["dash","team","kids","point","spoint","stats","combo","req","ann","abs","set"];const u=state.users.find(x=>x.id===state.session.userId);return (u&&u.pages&&u.pages.length)?u.pages:["point"];}
+function allowedViews(){if(!state.session)return [];if(state.session.role==="admin")return ["dash","team","kids","point","spoint","stats","combo","req","ann","abs","set"];const u=state.users.find(x=>x.id===state.session.userId);let pg=(u&&u.pages&&u.pages.length)?u.pages.slice():["point"];if(state.session.userId&&state.emps.find(e=>e.id===state.session.userId)&&!pg.includes("spoint"))pg.push("spoint");return pg;}
 function setAdminCode(){const n=prompt("Nouveau code administrateur :",state.adminCode);if(n!==null&&n.trim()){state.adminCode=n.trim();persist();toast("Code mis à jour ✓");}}
 function enterPresence(){state.session={userId:null,name:"Équipe",role:"employee"};state.view="point";persist();render();}
 function logout(){state.session=null;state.valSel=[];persist();render();}
@@ -274,7 +279,7 @@ function empWeekText(e){let lines=[`Planning — ${e.f} ${e.l} (${creche().name}
 
 function saveModal(){const m=state.modal;
   if(m.type==="creche"){if(m.edit){const c=state.creches.find(x=>x.id===m.edit);c.name=val("m_name")||c.name;c.cap=+val("m_cap")||c.cap;c.open=val("m_open")||c.open;c.close=val("m_close")||c.close;c.color=val("m_color")||c.color;}else{if(!val("m_name"))return;state.creches.push({id:"c"+Date.now(),name:val("m_name"),cap:+val("m_cap")||14,open:val("m_open")||"08:00",close:val("m_close")||"18:30",color:val("m_color")||"#6E9079"});}}
-  if(m.type==="emp"){if(m.edit){const e=state.emps.find(x=>x.id===m.edit);e.f=val("m_f")||e.f;e.l=val("m_l")||e.l;e.role=val("m_role");e.h=+val("m_h")||e.h;e.mail=val("m_mail");e.tel=val("m_tel");const c=val("m_c"),t=val("m_t");const ex=e.aff.find(a=>a[0]===c);if(ex)ex[1]=t;else e.aff.push([c,t]);}else{if(!val("m_f")||!val("m_l"))return;state.emps.push({id:"e"+Date.now(),f:val("m_f"),l:val("m_l"),role:val("m_role"),h:+val("m_h")||35,mail:val("m_mail"),tel:val("m_tel"),aff:[[val("m_c"),val("m_t")]]});}}
+  if(m.type==="emp"){if(m.edit){const e=state.emps.find(x=>x.id===m.edit);e.f=val("m_f")||e.f;e.l=val("m_l")||e.l;e.role=val("m_role");e.h=+val("m_h")||e.h;e.mail=val("m_mail");e.tel=val("m_tel");const c=val("m_c"),t=val("m_t");const ex=e.aff.find(a=>a[0]===c);if(ex)ex[1]=t;else e.aff.push([c,t]);}else{if(!val("m_f")||!val("m_l"))return;const nid="e"+Date.now();state.emps.push({id:nid,f:val("m_f"),l:val("m_l"),role:val("m_role"),h:+val("m_h")||35,mail:val("m_mail"),tel:val("m_tel"),aff:[[val("m_c"),val("m_t")]]});if(!state.users.some(u=>u.id===nid))state.users.push({id:nid,name:val("m_f")+" "+val("m_l"),admin:false,pages:["point","spoint"]});}}
   if(m.type==="child"){if(m.edit){const k=state.kids.find(x=>x.id===m.edit);k.f=val("m_f")||k.f;k.l=val("m_l")||k.l;k.g=val("m_g");k.c=val("m_cc")||k.c;k.spec=val("m_spec");k.note=val("m_note");k.dob=val("m_dob");k.arr=val("m_arr");}else{if(!val("m_f")||!val("m_l"))return;const s1=(val("m_s")&&val("m_e"))?val("m_s")+"-"+val("m_e"):"09:00-17:00";const s2=(val("m_s2")&&val("m_e2"))?";"+val("m_s2")+"-"+val("m_e2"):"";const slot=s1+s2;state.kids.push({id:"k"+Date.now(),f:val("m_f"),l:val("m_l"),c:val("m_cc")||state.cid,g:val("m_g"),spec:val("m_spec"),note:val("m_note"),dob:val("m_dob"),arr:val("m_arr"),plan:DAYS.map((_,i)=>chk("m_d"+i)?slot:"")});}}
   if(m.type==="shift"){if(!val("m_emp")||!val("m_s")||!val("m_e"))return;state.shifts.push({id:"s"+Date.now(),c:m.c,e:val("m_emp"),day:+m.d,s:val("m_s"),en:val("m_e"),name:val("m_sname").replace(/[|;]/g,""),color:val("m_scolor")});}
   if(m.type==="kseg"){if(!val("m_s")||!val("m_e"))return;const k=state.kids.find(x=>x.id===m.k);const arr=segs(k.plan[m.d]);arr.push({s:val("m_s"),en:val("m_e"),name:val("m_sname").replace(/[|;]/g,""),color:val("m_scolor")});k.plan[m.d]=joinSegs(arr);}
@@ -303,9 +308,20 @@ function ctrls(){let h=`<select onchange="setCreche(this.value)" style="width:au
   h+=`<span class="mini" style="align-self:center">${state.session.role==="admin"?"👑":"🧑‍🍼"} ${E(state.session.name)}</span><button class="btn soft" onclick="logout()">Quitter</button>`;
   return h;}
 function tabs(){const pend=state.requests.filter(r=>r.status==="en attente").length;
-  const T=[["dash","Tableau de bord"],["team","Planning équipe"],["kids","Planning enfants"],["point","Pointage enfants"],["spoint","Pointage salariés"],["stats","Heures"],["combo","Effectifs & loi"],["req","Demandes"+(pend?" ("+pend+")":"")],["ann","Annuaire"],["abs","Absences"],["set","Réglages"]];
-  const av=allowedViews();
-  return T.filter(([k])=>av.includes(k)).map(([k,l])=>`<div class="tab ${state.view===k?"on":""}" onclick="setView('${k}')">${l}</div>`).join("");}
+  const groups=[
+    {k:"dash",label:"Tableau de bord",items:[["dash","Tableau de bord"]]},
+    {k:"plan",label:"Plannings",items:[["team","Planning équipe"],["kids","Planning enfants"]]},
+    {k:"pt",label:"Pointages",items:[["point","Pointage enfants"],["spoint","Pointage salariés"]]},
+    {k:"data",label:"Données & graphiques",items:[["stats","Heures"],["combo","Effectifs & loi"]]},
+    {k:"res",label:"Réseau",items:[["req","Demandes"+(pend?" ("+pend+")":"")],["ann","Annuaire"],["abs","Absences"]]},
+    {k:"set",label:"Réglages",items:[["set","Réglages"]]}
+  ];
+  const av=allowedViews();let out="";
+  groups.forEach(g=>{const items=g.items.filter(([k])=>av.includes(k));if(!items.length)return;
+    if(items.length===1){const it=items[0];out+=`<div class="tab ${state.view===it[0]?"on":""}" onclick="setView('${it[0]}')">${it[1]}</div>`;return;}
+    const active=items.some(([k])=>k===state.view);const open=state.menuOpen===g.k;
+    out+=`<div class="menuwrap"><div class="tab ${active?"on":""}" onclick="toggleMenu('${g.k}')">${g.label} ▾</div>`+(open?`<div class="dd">`+items.map(([k,l])=>`<div class="ddi ${state.view===k?"on":""}" onclick="setView('${k}')">${l}</div>`).join("")+`</div>`:"")+`</div>`;});
+  return out;}
 function head(t,s,act){return `<div class="row" style="align-items:flex-end;justify-content:space-between;margin-bottom:16px"><div><h1>${t}</h1>${s?`<div class="sub">${s}</div>`:""}</div><div class="row noprint">${act||""}</div></div>`;}
 function kpi(l,v,h,col){return `<div class="card kpi"><label>${l}</label><div class="kpiv" style="color:${col}">${v}</div>${h?`<div class="mini">${h}</div>`:""}</div>`;}
 function dayTabs(){return `<div class="row" style="margin-bottom:14px;gap:6px">`+DAYS.map((d,i)=>`<button class="btn ${state.day===i?"pri":"soft"}" onclick="setDay(${i})">${d} <span style="opacity:.7">${dlabel(state.week,i)}</span></button>`).join("")+`</div>`;}
@@ -497,14 +513,15 @@ views.point=function(){const c=state.cid,d=state.day;const ks=kidsIn(c).filter(k
 
 /* ---- POINTAGE SALARIÉS (page dédiée) ---- */
 views.spoint=function(){const c=state.cid,d=state.day;const isAdmin=state.session&&state.session.role==="admin";
+  const selfEmp=(!isAdmin&&state.session&&state.session.userId)?state.emps.find(e=>e.id===state.session.userId):null;
   const eget=e=>state.empPts[e.id+"_"+d]||{status:"à pointer",arr:null,dep:null};
   const ecol=s=>s==="validé"?"var(--sage)":s==="soumis"?"var(--amber)":s==="absent"?"var(--red)":"var(--soft)";
-  const list=team(c);
-  const nb=s=>list.filter(e=>eget(e).status===s).length;
-  let h=head("Pointage des salariés",creche().name+" · "+DAYS[d]+" "+dlabel(state.week,d)+" · ⏱ "+toHM(state.now),isAdmin?`<button class="btn soft" onclick="validateSel(${d})">✔ Valider la sélection</button><button class="btn pri" onclick="validateAll('${c}',${d})">✔✔ Tout valider</button>`:"");
+  const list=selfEmp?[selfEmp]:team(c);
+  const nb=s=>team(c).filter(e=>eget(e).status===s).length;
+  let h=head(selfEmp?"Mon pointage":"Pointage des salariés",(selfEmp?selfEmp.f+" "+selfEmp.l:creche().name)+" · "+DAYS[d]+" "+dlabel(state.week,d)+" · ⏱ "+toHM(state.now),isAdmin?`<button class="btn soft" onclick="validateSel(${d})">✔ Valider la sélection</button><button class="btn pri" onclick="validateAll('${c}',${d})">✔✔ Tout valider</button>`:"");
   h+=dayTabs();
-  h+=`<div class="row" style="margin-bottom:16px">${kpi("Pointés",nb("soumis")+nb("validé"),"/ "+list.length,"var(--sage)")}${kpi("Validés",nb("validé"),"","var(--sage)")}${kpi("À valider",nb("soumis"),"","var(--amber)")}${kpi("Absentes",nb("absent"),"","var(--red)")}</div>`;
-  h+=`<p class="mini" style="margin-bottom:8px">Chaque salariée a sa fiche : elle pointe Arrivée / Départ.${isAdmin?" Les admins vérifient, corrigent et valident — une à une, par sélection, ou tout d'un coup." :""}</p>`;
+  if(!selfEmp)h+=`<div class="row" style="margin-bottom:16px">${kpi("Pointés",nb("soumis")+nb("validé"),"/ "+team(c).length,"var(--sage)")}${kpi("Validés",nb("validé"),"","var(--sage)")}${kpi("À valider",nb("soumis"),"","var(--amber)")}${kpi("Absentes",nb("absent"),"","var(--red)")}</div>`;
+  h+=`<p class="mini" style="margin-bottom:8px">${selfEmp?"Pointe ton arrivée et ton départ pour aujourd'hui.":"Chaque salariée a sa fiche : elle pointe Arrivée / Départ."}${isAdmin?" Les admins vérifient, corrigent et valident — une à une, par sélection, ou tout d'un coup." :""}</p>`;
   h+=`<div class="card" style="padding:6px">`+list.map(e=>{const p=eget(e);const sel=state.valSel.includes(e.id);return `<div style="display:flex;align-items:center;gap:10px;padding:11px;border-bottom:1px solid #f3eee2;flex-wrap:wrap">`+(isAdmin?`<input type="checkbox" style="width:auto" ${sel?"checked":""} onclick="toggleValSel('${e.id}')">`:"")+`<span style="width:36px;height:36px;border-radius:11px;background:var(--sage-xl);color:var(--sage-d);font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini(e.f,e.l)}</span><div style="flex:1;min-width:120px"><b>${e.f} ${e.l}</b><div class="mini">${e.role.split(" ")[0]} · contrat ${e.h}h</div></div><span class="pill" style="background:${ecol(p.status)}22;color:${ecol(p.status)}">${p.status}${p.arr?" · "+p.arr:""}${p.dep?"→"+p.dep:""}</span><div class="row" style="gap:6px"><button class="btn ${p.status==="à pointer"?"pri":"ghost"}" onclick="empClock('${e.id}',${d},'arr')">Arrivée</button><button class="btn soft" onclick="empClock('${e.id}',${d},'dep')">Départ</button><button class="btn soft" style="color:var(--red)" onclick="empSetAbs('${e.id}',${d})">Absente</button>`+(isAdmin?(p.status==="validé"?`<button class="btn soft" onclick="empUnval('${e.id}',${d})">Dévalider</button>`:`<button class="btn pri" onclick="empValidate('${e.id}',${d})">Valider</button>`):"")+`</div></div>`;}).join("")+`</div>`;
   return h;};
 
